@@ -1,54 +1,128 @@
-# React + TypeScript + Vite
+# 🛍️ Ecommerce Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Final project** for the [RS School JavaScript/Front-End 2024Q4](https://rs.school/) course. This is a modern e-commerce web application built with **React**, **TypeScript**, **Vite**, and **Ant Design**. It includes product browsing, cart functionality, and state management.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Table of Contents
 
-## Expanding the ESLint configuration
+- [📖 Project Purpose](#-project-purpose)
+- [🚀 Tech Stack](#-tech-stack)
+- [📂 Project Structure](#-project-structure)
+- [📦 Scripts & Usage](#-scripts--usage)
+- [🔧 Local Setup & Installation](#-local-setup--installation)
+- [🧪 Testing](#-testing)
+- [📄 License](#-license)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📖 Project Purpose
+
+The goal of this project is to:
+
+- Apply modern front-end development skills learned in the RS School JavaScript/Front-End course.
+- Build a fully functional and responsive e-commerce application.
+- Practice collaboration, Git workflows, and coding standards in a team.
+
+---
+
+## 🚀 Tech Stack
+
+| Category         | Technology                                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| Framework        | [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)                       |
+| Build Tool       | [Vite](https://vitejs.dev/)                                                                         |
+| UI Library       | [Ant Design](https://ant.design/)                                                                   |
+| State Management | [Zustand](https://zustand-demo.pmnd.rs/)                                                            |
+| Routing          | [React Router v7](https://reactrouter.com/)                                                         |
+| Linting          | [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)                                    |
+| Testing          | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/)                     |
+| Git Hooks        | [Husky](https://typicode.github.io/husky/#/) + [lint-staged](https://github.com/okonet/lint-staged) |
+
+---
+
+## 📂 Project Structure
+
+```
+ecommerce-application/
+├── public/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── store/
+│   ├── hooks/
+│   ├── App.tsx
+│   └── main.tsx
+├── .husky/
+├── .eslintrc.cjs
+├── .prettierrc
+├── vite.config.ts
+└── package.json
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📦 Scripts & Usage
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+All scripts are run from the root directory using `npm run <script>`:
+
+| Script       | Description                                  |
+| ------------ | -------------------------------------------- |
+| `dev`        | Starts the Vite dev server with hot reload   |
+| `build`      | Builds the project using TypeScript and Vite |
+| `preview`    | Serves the built app for local preview       |
+| `lint`       | Runs ESLint to analyze code for problems     |
+| `format:fix` | Automatically formats code using Prettier    |
+| `test`       | Runs unit tests using Vitest                 |
+| `test:ui`    | Opens the Vitest UI test runner              |
+| `prepare`    | Hook to setup Husky after install            |
+
+### 🧹 Lint-staged
+
+On every commit, `lint-staged` runs ESLint and Prettier only on changed files to ensure consistent style and code quality.
+
+---
+
+## 🔧 Local Setup & Installation
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/Avechkina/eCommerce-Application.git
 ```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Run the development server**
+
+```bash
+npm run dev
+```
+
+The app should now be running at [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🧪 Testing
+
+Run all tests:
+
+```bash
+npm run test
+```
+
+Run with interactive UI:
+
+```bash
+npm run test:ui
+```
+
+---
+
+## 📄 License
+
+This project is created as part of RS School's educational program and is intended for learning purposes.
