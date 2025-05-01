@@ -1,0 +1,5 @@
+
+curl https://auth.eu-central-1.aws.commercetools.com/oauth/token \
+     --basic --user "5tMfcVS4JDjNSvJGud1hQ2EK:E1jh5tiRoct4IwevjXtJFLnPG1AKnDdN" \
+     -X POST \
+     -d "grant_type=client_credentials&scope=manage_my_shopping_lists:reacteam-ecommerce-app view_categories:reacteam-ecommerce-app manage_my_quote_requests:reacteam-ecommerce-app manage_my_profile:reacteam-ecommerce-app manage_my_quotes:reacteam-ecommerce-app create_anonymous_token:reacteam-ecommerce-app view_published_products:reacteam-ecommerce-app manage_my_business_units:reacteam-ecommerce-app manage_my_orders:reacteam-ecommerce-app manage_my_payments:reacteam-ecommerce-app"
