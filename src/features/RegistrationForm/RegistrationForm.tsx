@@ -1,22 +1,57 @@
+import { CustomerDraft, RegistrationFormFields } from 'types/registration';
 import { AutoComplete, Button, DatePicker, Form, Input } from 'antd';
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import { useMemo } from 'react';
+import createCustomer from '@utils/createCustomer';
 
 const RegistrationForm = () => {
   const [form] = Form.useForm();
-
   const countryList = useMemo(() => {
+    countries.registerLocale(enLocale);
+    return Object.entries(countries.getNames('en')).map(([code, name]) => ({
+      code,
+      name,
+    }));
+  }, []);
+
+  const countryOptions = useMemo(() => {
     countries.registerLocale(enLocale);
     return Object.entries(countries.getNames('en')).map(([, name]) => ({
       value: name,
     }));
   }, []);
 
+  const dateFormat = 'YYYY-MM-DD';
+
   const handleSubmit = async () => {
     try {
-      const values = await form.validateFields();
-      console.log('Valid values:', values);
+      const values: RegistrationFormFields = await form.validateFields();
+      const {
+        firstName,
+        lastName,
+        dateOfBirth,
+        email,
+        password,
+        country,
+        city,
+        postalCode,
+        streetName,
+      } = values;
+      const countryCode = countryList.find((c) => c.name === country)?.code;
+      if (countryCode) {
+        const customer: CustomerDraft = {
+          key: crypto.randomUUID(),
+          firstName,
+          lastName,
+          dateOfBirth: dateOfBirth.format(dateFormat),
+          email,
+          password,
+          addresses: [{ country: countryCode, city, postalCode, streetName }],
+        };
+        const newCustomer = await createCustomer(customer);
+        console.log(newCustomer);
+      }
     } catch (error) {
       console.log('Validation failed:', error);
     }
@@ -25,18 +60,24 @@ const RegistrationForm = () => {
   return (
     <Form form={form} onFinish={handleSubmit}>
       <Form.Item
-        name="first name"
+        name="firstName"
         rules={[{ required: true, message: 'Please input your first name!' }]}
       >
         <Input placeholder="First name" variant="underlined" />
       </Form.Item>
       <Form.Item
-        name="last name"
+        name="lastName"
         rules={[{ required: true, message: 'Please input your last name!' }]}
       >
         <Input placeholder="Last name" variant="underlined" />
       </Form.Item>
-      <Form.Item name="date of birth" label="Date of birth">
+      <Form.Item
+        name="dateOfBirth"
+        label="Date of birth"
+        rules={[
+          { required: true, message: 'Please input your date of birth!' },
+        ]}
+      >
         <DatePicker variant="underlined" />
       </Form.Item>
       <Form.Item
@@ -63,7 +104,7 @@ const RegistrationForm = () => {
       >
         <AutoComplete
           placeholder="Country"
-          options={countryList}
+          options={countryOptions}
           filterOption
           variant="underlined"
           style={{ textAlign: 'start' }}
@@ -76,13 +117,13 @@ const RegistrationForm = () => {
         <Input placeholder="City" variant="underlined" />
       </Form.Item>
       <Form.Item
-        name="postal code"
+        name="postalCode"
         rules={[{ required: true, message: 'Please input your postal code!' }]}
       >
         <Input placeholder="Postal code" variant="underlined" />
       </Form.Item>
       <Form.Item
-        name="street"
+        name="streetName"
         rules={[{ required: true, message: 'Please input your street!' }]}
       >
         <Input placeholder="Street" variant="underlined" />
