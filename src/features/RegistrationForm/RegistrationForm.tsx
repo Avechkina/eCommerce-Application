@@ -4,9 +4,13 @@ import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import { useMemo } from 'react';
 import createCustomer from '@utils/createCustomer';
+import { useNavigate } from 'react-router';
+import RequiredField from '@components/RequiredFiled/RequiredField';
 
 const RegistrationForm = () => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+
   const countryList = useMemo(() => {
     countries.registerLocale(enLocale);
     return Object.entries(countries.getNames('en')).map(([code, name]) => ({
@@ -23,6 +27,7 @@ const RegistrationForm = () => {
   }, []);
 
   const dateFormat = 'YYYY-MM-DD';
+  const statusCode = 201;
 
   const handleSubmit = async () => {
     try {
@@ -49,59 +54,48 @@ const RegistrationForm = () => {
           password,
           addresses: [{ country: countryCode, city, postalCode, streetName }],
         };
-        const newCustomer = await createCustomer(customer);
-        console.log(newCustomer);
+        const response = await createCustomer(customer);
+        if (response.statusCode !== statusCode) {
+          return;
+        }
+        navigate('/');
+        console.log(response);
       }
     } catch (error) {
       console.log('Validation failed:', error);
     }
   };
 
+  const validateMessages = {
+    required: "Please input your '${name}'!",
+  };
+
   return (
-    <Form form={form} onFinish={handleSubmit}>
-      <Form.Item
-        name="firstName"
-        rules={[{ required: true, message: 'Please input your first name!' }]}
-      >
+    <Form
+      form={form}
+      onFinish={handleSubmit}
+      validateMessages={validateMessages}
+    >
+      <RequiredField name="firstName" label="first name">
         <Input placeholder="First name" variant="underlined" />
-      </Form.Item>
-      <Form.Item
-        name="lastName"
-        rules={[{ required: true, message: 'Please input your last name!' }]}
-      >
+      </RequiredField>
+      <RequiredField name="lastName" label="last name">
         <Input placeholder="Last name" variant="underlined" />
-      </Form.Item>
-      <Form.Item
-        name="dateOfBirth"
-        label="Date of birth"
-        rules={[
-          { required: true, message: 'Please input your date of birth!' },
-        ]}
-      >
+      </RequiredField>
+      <RequiredField name="dateOfBirth" label="date of birth">
         <DatePicker variant="underlined" />
-      </Form.Item>
-      <Form.Item
+      </RequiredField>
+      <RequiredField
         name="email"
-        rules={[
-          { type: 'email', message: 'The input is not valid E-mail!' },
-          {
-            required: true,
-            message: 'Please input your E-mail!',
-          },
-        ]}
+        label="E-mail"
+        rules={[{ type: 'email', message: 'The input is not valid E-mail!' }]}
       >
         <Input placeholder="Email address" variant="underlined" />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
+      </RequiredField>
+      <RequiredField name="password" label="password">
         <Input.Password placeholder="Password" variant="underlined" />
-      </Form.Item>
-      <Form.Item
-        name="country"
-        rules={[{ required: true, message: 'Please input your country!' }]}
-      >
+      </RequiredField>
+      <RequiredField name="country" required label="country">
         <AutoComplete
           placeholder="Country"
           options={countryOptions}
@@ -109,25 +103,16 @@ const RegistrationForm = () => {
           variant="underlined"
           style={{ textAlign: 'start' }}
         />
-      </Form.Item>
-      <Form.Item
-        name="city"
-        rules={[{ required: true, message: 'Please input your city!' }]}
-      >
+      </RequiredField>
+      <RequiredField name="city" label="city">
         <Input placeholder="City" variant="underlined" />
-      </Form.Item>
-      <Form.Item
-        name="postalCode"
-        rules={[{ required: true, message: 'Please input your postal code!' }]}
-      >
+      </RequiredField>
+      <RequiredField name="postalCode" label="postal code">
         <Input placeholder="Postal code" variant="underlined" />
-      </Form.Item>
-      <Form.Item
-        name="streetName"
-        rules={[{ required: true, message: 'Please input your street!' }]}
-      >
+      </RequiredField>
+      <RequiredField name="streetName" label="street name">
         <Input placeholder="Street" variant="underlined" />
-      </Form.Item>
+      </RequiredField>
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Sign Up
