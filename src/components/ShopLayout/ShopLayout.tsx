@@ -1,11 +1,11 @@
-import LayoutHeader from '@components/Header/Header';
+import Header from '@components/Header/Header';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router';
 
 const ShopLayout = () => {
   return (
     <Layout>
-      <LayoutHeader />
+      <Header />
       <Outlet />
     </Layout>
   );
