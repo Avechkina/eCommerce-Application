@@ -1,15 +1,21 @@
 import { CustomerDraft, RegistrationFormFields } from 'types/registration';
-import { AutoComplete, Button, DatePicker, Form, Input } from 'antd';
+import { Alert, AutoComplete, Button, DatePicker, Form, Input } from 'antd';
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import createCustomer from '@utils/createCustomer';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import RequiredField from '@components/RequiredFiled/RequiredField';
+import useUserStore from '@store/userStore';
 
 const RegistrationForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [error, setError] = useState({
+    message: '',
+    visible: false,
+  });
+  const updateId = useUserStore((state) => state.updateId);
 
   const countryList = useMemo(() => {
     countries.registerLocale(enLocale);
@@ -27,7 +33,6 @@ const RegistrationForm = () => {
   }, []);
 
   const dateFormat = 'YYYY-MM-DD';
-  const statusCode = 201;
 
   const handleSubmit = async () => {
     try {
@@ -55,14 +60,14 @@ const RegistrationForm = () => {
           addresses: [{ country: countryCode, city, postalCode, streetName }],
         };
         const response = await createCustomer(customer);
-        if (response.statusCode !== statusCode) {
-          return;
-        }
         navigate('/');
+        updateId(response.body.customer.id);
         console.log(response);
       }
     } catch (error) {
-      console.log('Validation failed:', error);
+      if (error instanceof Error) {
+        setError({ message: error.message, visible: true });
+      }
     }
   };
 
@@ -70,55 +75,72 @@ const RegistrationForm = () => {
     required: "Please input your '${name}'!",
   };
 
+  const handleClose = () => {
+    setError({ message: '', visible: false });
+  };
+
   return (
-    <Form
-      form={form}
-      onFinish={handleSubmit}
-      validateMessages={validateMessages}
-    >
-      <RequiredField name="firstName" label="first name">
-        <Input placeholder="First name" variant="underlined" />
-      </RequiredField>
-      <RequiredField name="lastName" label="last name">
-        <Input placeholder="Last name" variant="underlined" />
-      </RequiredField>
-      <RequiredField name="dateOfBirth" label="date of birth">
-        <DatePicker variant="underlined" />
-      </RequiredField>
-      <RequiredField
-        name="email"
-        label="E-mail"
-        rules={[{ type: 'email', message: 'The input is not valid E-mail!' }]}
-      >
-        <Input placeholder="Email address" variant="underlined" />
-      </RequiredField>
-      <RequiredField name="password" label="password">
-        <Input.Password placeholder="Password" variant="underlined" />
-      </RequiredField>
-      <RequiredField name="country" required label="country">
-        <AutoComplete
-          placeholder="Country"
-          options={countryOptions}
-          filterOption
-          variant="underlined"
-          style={{ textAlign: 'start' }}
+    <>
+      {error.visible && (
+        <Alert
+          message={error.message}
+          afterClose={handleClose}
+          type="error"
+          closable
         />
-      </RequiredField>
-      <RequiredField name="city" label="city">
-        <Input placeholder="City" variant="underlined" />
-      </RequiredField>
-      <RequiredField name="postalCode" label="postal code">
-        <Input placeholder="Postal code" variant="underlined" />
-      </RequiredField>
-      <RequiredField name="streetName" label="street name">
-        <Input placeholder="Street" variant="underlined" />
-      </RequiredField>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Sign Up
-        </Button>
-      </Form.Item>
-    </Form>
+      )}
+      <p>
+        Already have an account? <Link to="/signin">Sign in</Link>
+      </p>
+      <Form
+        form={form}
+        onFinish={handleSubmit}
+        validateMessages={validateMessages}
+      >
+        <RequiredField name="firstName" label="first name">
+          <Input placeholder="First name" variant="underlined" />
+        </RequiredField>
+        <RequiredField name="lastName" label="last name">
+          <Input placeholder="Last name" variant="underlined" />
+        </RequiredField>
+        <RequiredField name="dateOfBirth" label="date of birth">
+          <DatePicker variant="underlined" />
+        </RequiredField>
+        <RequiredField
+          name="email"
+          label="E-mail"
+          rules={[{ type: 'email', message: 'The input is not valid E-mail!' }]}
+        >
+          <Input placeholder="Email address" variant="underlined" />
+        </RequiredField>
+        <RequiredField name="password" label="password">
+          <Input.Password placeholder="Password" variant="underlined" />
+        </RequiredField>
+        <RequiredField name="country" required label="country">
+          <AutoComplete
+            placeholder="Country"
+            options={countryOptions}
+            filterOption
+            variant="underlined"
+            style={{ textAlign: 'start' }}
+          />
+        </RequiredField>
+        <RequiredField name="city" label="city">
+          <Input placeholder="City" variant="underlined" />
+        </RequiredField>
+        <RequiredField name="postalCode" label="postal code">
+          <Input placeholder="Postal code" variant="underlined" />
+        </RequiredField>
+        <RequiredField name="streetName" label="street name">
+          <Input placeholder="Street" variant="underlined" />
+        </RequiredField>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Sign Up
+          </Button>
+        </Form.Item>
+      </Form>
+    </>
   );
 };
 
