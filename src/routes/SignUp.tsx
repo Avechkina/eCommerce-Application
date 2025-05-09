@@ -1,7 +1,11 @@
+import RegistrationForm from '@features/RegistrationForm/RegistrationForm';
+
 const SignUp = () => {
   return (
     <>
-      <h1>Sign up</h1>
+      <RegistrationForm />
+
+
     </>
   );
 };
