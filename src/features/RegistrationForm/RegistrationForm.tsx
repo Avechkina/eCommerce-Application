@@ -93,46 +93,46 @@ const RegistrationForm = () => {
         Already have an account? <Link to="/signin">Sign in</Link>
       </p>
       <Form
+        variant="underlined"
         form={form}
         onFinish={handleSubmit}
         validateMessages={validateMessages}
       >
         <RequiredField name="firstName" label="first name">
-          <Input placeholder="First name" variant="underlined" />
+          <Input placeholder="First name" />
         </RequiredField>
         <RequiredField name="lastName" label="last name">
-          <Input placeholder="Last name" variant="underlined" />
+          <Input placeholder="Last name" />
         </RequiredField>
         <RequiredField name="dateOfBirth" label="date of birth">
-          <DatePicker variant="underlined" />
+          <DatePicker />
         </RequiredField>
         <RequiredField
           name="email"
           label="E-mail"
           rules={[{ type: 'email', message: 'The input is not valid E-mail!' }]}
         >
-          <Input placeholder="Email address" variant="underlined" />
+          <Input placeholder="Email address" />
         </RequiredField>
         <RequiredField name="password" label="password">
-          <Input.Password placeholder="Password" variant="underlined" />
+          <Input.Password placeholder="Password" />
         </RequiredField>
         <RequiredField name="country" required label="country">
           <AutoComplete
             placeholder="Country"
             options={countryOptions}
             filterOption
-            variant="underlined"
             style={{ textAlign: 'start' }}
           />
         </RequiredField>
         <RequiredField name="city" label="city">
-          <Input placeholder="City" variant="underlined" />
+          <Input placeholder="City" />
         </RequiredField>
         <RequiredField name="postalCode" label="postal code">
-          <Input placeholder="Postal code" variant="underlined" />
+          <Input placeholder="Postal code" />
         </RequiredField>
         <RequiredField name="streetName" label="street name">
-          <Input placeholder="Street" variant="underlined" />
+          <Input placeholder="Street" />
         </RequiredField>
         <Form.Item>
           <Button type="primary" htmlType="submit">
