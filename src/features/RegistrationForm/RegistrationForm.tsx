@@ -61,7 +61,7 @@ const RegistrationForm = () => {
         };
         const response = await createCustomer(customer);
         navigate('/');
-        updateId(response.body.customer.id);
+        updateId(response.body.customer.id, true);
         console.log(response);
       }
     } catch (error) {

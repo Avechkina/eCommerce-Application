@@ -2,11 +2,13 @@ import { create } from 'zustand';
 
 interface UserState {
   id: string;
-  updateId: (newId: string) => void;
+  isAuth: boolean;
+  updateId: (newId: string, isAuth: boolean) => void;
 }
 const useUserStore = create<UserState>()((set) => ({
   id: '',
-  updateId: (newId: string) => set({ id: newId }),
+  isAuth: false,
+  updateId: (newId: string, isAuth: boolean) => set({ id: newId, isAuth }),
 }));
 
 export default useUserStore;

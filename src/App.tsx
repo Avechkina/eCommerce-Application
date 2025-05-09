@@ -3,11 +3,11 @@ import './App.css';
 import { useEffect } from 'react';
 
 function App() {
-  const id = useUserStore((state) => state.id);
+  const userState = useUserStore((state) => state);
 
   useEffect(() => {
-    console.log(id);
-  }, [id]);
+    console.log(userState);
+  }, [userState]);
   return (
     <>
       <h1>{'ecommerce app'}</h1>
