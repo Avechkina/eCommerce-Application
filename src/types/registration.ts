@@ -21,3 +21,15 @@ export type RegistrationFormFields = CustomerDraft &
   Address & {
     dateOfBirth: dayjs.Dayjs;
   };
+
+export type FormValues = {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  email: string;
+  password: string;
+  country: string;
+  city: string;
+  postalCode: string;
+  streetName: string;
+};

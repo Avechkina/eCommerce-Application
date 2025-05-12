@@ -1,42 +1,36 @@
-import { CustomerDraft, RegistrationFormFields } from 'types/registration';
+import { CustomerDraft, FormValues } from 'types/registration';
 import { Alert, AutoComplete, Button, DatePicker, Form, Input } from 'antd';
-import countries from 'i18n-iso-countries';
-import enLocale from 'i18n-iso-countries/langs/en.json';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import createCustomer from '@utils/createCustomer';
 import { Link, useNavigate } from 'react-router';
-import RequiredField from '@components/RequiredFiled/RequiredField';
 import useUserStore from '@store/userStore';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import FormField from '@components/FormField/FormField';
+import { schema } from '@utils/schema';
+import { countryList, countryOptions } from '@utils/countries';
+import dayjs from 'dayjs';
 
 const RegistrationForm = () => {
-  const [form] = Form.useForm();
   const navigate = useNavigate();
   const [error, setError] = useState({
     message: '',
     visible: false,
   });
   const updateId = useUserStore((state) => state.updateId);
-
-  const countryList = useMemo(() => {
-    countries.registerLocale(enLocale);
-    return Object.entries(countries.getNames('en')).map(([code, name]) => ({
-      code,
-      name,
-    }));
-  }, []);
-
-  const countryOptions = useMemo(() => {
-    countries.registerLocale(enLocale);
-    return Object.entries(countries.getNames('en')).map(([, name]) => ({
-      value: name,
-    }));
-  }, []);
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+  });
 
   const dateFormat = 'YYYY-MM-DD';
 
-  const handleSubmit = async () => {
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
     try {
-      const values: RegistrationFormFields = await form.validateFields();
       const {
         firstName,
         lastName,
@@ -54,7 +48,7 @@ const RegistrationForm = () => {
           key: crypto.randomUUID(),
           firstName,
           lastName,
-          dateOfBirth: dateOfBirth.format(dateFormat),
+          dateOfBirth,
           email,
           password,
           addresses: [{ country: countryCode, city, postalCode, streetName }],
@@ -69,10 +63,6 @@ const RegistrationForm = () => {
         setError({ message: error.message, visible: true });
       }
     }
-  };
-
-  const validateMessages = {
-    required: "Please input your '${name}'!",
   };
 
   const handleClose = () => {
@@ -92,50 +82,58 @@ const RegistrationForm = () => {
       <p>
         Already have an account? <Link to="/signin">Sign in</Link>
       </p>
-      <Form
-        variant="underlined"
-        form={form}
-        onFinish={handleSubmit}
-        validateMessages={validateMessages}
-      >
-        <RequiredField name="firstName" label="first name">
-          <Input placeholder="First name" />
-        </RequiredField>
-        <RequiredField name="lastName" label="last name">
-          <Input placeholder="Last name" />
-        </RequiredField>
-        <RequiredField name="dateOfBirth" label="date of birth">
-          <DatePicker />
-        </RequiredField>
-        <RequiredField
-          name="email"
-          label="E-mail"
-          rules={[{ type: 'email', message: 'The input is not valid E-mail!' }]}
-        >
-          <Input placeholder="Email address" />
-        </RequiredField>
-        <RequiredField name="password" label="password">
-          <Input.Password placeholder="Password" />
-        </RequiredField>
-        <RequiredField name="country" required label="country">
-          <AutoComplete
-            placeholder="Country"
-            options={countryOptions}
-            filterOption
-            style={{ textAlign: 'start' }}
-          />
-        </RequiredField>
-        <RequiredField name="city" label="city">
-          <Input placeholder="City" />
-        </RequiredField>
-        <RequiredField name="postalCode" label="postal code">
-          <Input placeholder="Postal code" />
-        </RequiredField>
-        <RequiredField name="streetName" label="street name">
-          <Input placeholder="Street" />
-        </RequiredField>
+      <Form variant="underlined" onFinish={handleSubmit(onSubmit)}>
+        <FormField
+          name="firstName"
+          placeholder="First name"
+          control={control}
+        />
+        <FormField name="lastName" placeholder="Last name" control={control} />
+        <FormField
+          name="dateOfBirth"
+          control={control}
+          renderItem={(field) => (
+            <DatePicker
+              {...field}
+              value={field.value ? dayjs(field.value) : undefined}
+              onChange={(date) =>
+                field.onChange(date ? date.format(dateFormat) : undefined)
+              }
+              disabledDate={(current) => current && current > dayjs()}
+              placeholder="Date of birth"
+            />
+          )}
+        />
+        <FormField name="email" placeholder="Email address" control={control} />
+        <FormField
+          name="password"
+          control={control}
+          renderItem={(field) => (
+            <Input.Password {...field} placeholder="Password" />
+          )}
+        />
+        <FormField
+          name="country"
+          control={control}
+          renderItem={(field) => (
+            <AutoComplete
+              {...field}
+              options={countryOptions}
+              filterOption
+              style={{ textAlign: 'start' }}
+              placeholder="Country"
+            />
+          )}
+        />
+        <FormField name="city" placeholder="City" control={control} />
+        <FormField
+          name="postalCode"
+          placeholder="Postal code"
+          control={control}
+        />
+        <FormField name="streetName" placeholder="Street" control={control} />
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button disabled={!isValid} type="primary" htmlType="submit">
             Sign Up
           </Button>
         </Form.Item>
