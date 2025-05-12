@@ -31,6 +31,12 @@ const RegistrationForm = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
     try {
+      const trimmedValues = Object.fromEntries(
+        Object.entries(values).map(([key, val]) => [
+          key,
+          typeof val === 'string' ? val.trim() : val,
+        ])
+      );
       const {
         firstName,
         lastName,
@@ -41,7 +47,7 @@ const RegistrationForm = () => {
         city,
         postalCode,
         streetName,
-      } = values;
+      } = trimmedValues;
       const countryCode = countryList.find((c) => c.name === country)?.code;
       if (countryCode) {
         const customer: CustomerDraft = {
