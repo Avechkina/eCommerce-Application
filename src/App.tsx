@@ -10,7 +10,7 @@ function App() {
   }, [userState]);
   return (
     <>
-      <h1>{'ecommerce app'}</h1>
+      <h1>ecommerce app</h1>
     </>
   );
 }
