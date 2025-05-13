@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { countryOptions } from './countries';
 import dayjs from 'dayjs';
+import { COUNTRIES } from './countries';
 
 const VALIDATION_RULES = {
   PASSWORD_LENGTH: 8,
@@ -65,14 +65,33 @@ export const schema = yup
       .test(
         'is valid country',
         'Select a valid country',
-        (value) => !!value && countryOptions.some((opt) => opt.value === value)
+        (value) => !!value && COUNTRIES.some((c) => c.value === value)
       ),
     city: yup
       .string()
       .trim()
       .required('Please input your city name')
       .matches(/^[A-Za-z]+$/, 'City name must contain only letters'),
-    postalCode: yup.string().trim().required('Please input your postal code'),
+    postalCode: yup
+      .string()
+      .trim()
+      .required('Please input your postal code')
+      .when('country', {
+        is: 'Georgia',
+        then: (schema) =>
+          schema.matches(
+            /^\d{4}$/,
+            'Georgian postal code must be exactly 4 digits'
+          ),
+      })
+      .when('country', {
+        is: 'Belarus',
+        then: (schema) =>
+          schema.matches(
+            /^\d{6}$/,
+            'Belarusian postal code must be exactly 6 digits'
+          ),
+      }),
     streetName: yup.string().trim().required('Please input your street name'),
   })
   .required();

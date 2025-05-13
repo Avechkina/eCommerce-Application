@@ -1,6 +1,6 @@
 import { CustomerDraft, FormValues } from 'types/registration';
 import { Alert, AutoComplete, Button, DatePicker, Form, Input } from 'antd';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import createCustomer from '@utils/createCustomer';
 import { Link, useNavigate } from 'react-router';
 import useUserStore from '@store/userStore';
@@ -8,8 +8,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormField from '@components/FormField/FormField';
 import { schema } from '@utils/schema';
-import { countryList, countryOptions } from '@utils/countries';
 import dayjs from 'dayjs';
+import { COUNTRIES } from '@utils/countries';
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -26,6 +26,10 @@ const RegistrationForm = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
+  const countryOptions = useMemo(
+    () => COUNTRIES.map((country) => ({ value: country.value })),
+    []
+  );
 
   const dateFormat = 'YYYY-MM-DD';
 
@@ -48,7 +52,7 @@ const RegistrationForm = () => {
         postalCode,
         streetName,
       } = trimmedValues;
-      const countryCode = countryList.find((c) => c.name === country)?.code;
+      const countryCode = COUNTRIES.find((c) => c.value === country)?.code;
       if (countryCode) {
         const customer: CustomerDraft = {
           key: crypto.randomUUID(),
