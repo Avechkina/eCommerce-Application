@@ -4,8 +4,6 @@ const SignUp = () => {
   return (
     <>
       <RegistrationForm />
-
-
     </>
   );
 };
