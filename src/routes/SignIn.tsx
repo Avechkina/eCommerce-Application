@@ -1,5 +1,11 @@
+import LoginForm from '@features/loginForm/LoginForm';
+
 const SignIn = () => {
-  return <h1>Sign in</h1>;
+  return (
+    <>
+      <LoginForm />
+    </>
+  );
 };
 
 export default SignIn;
