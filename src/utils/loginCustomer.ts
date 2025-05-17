@@ -1,12 +1,12 @@
 import { apiRoot } from '@services/BuildClient';
-import { UserLogin } from 'types/authentication';
+import { LoginFormValues } from 'types/authentication';
 
-const loginCustomer = (customer: UserLogin) => {
+const loginCustomer = (customer: LoginFormValues) => {
   return apiRoot
     .me()
     .login()
     .post({
-      // The UserLogin is the object within the body
+      // The LoginFormValues is the object within the body
       body: customer,
     })
     .execute();
