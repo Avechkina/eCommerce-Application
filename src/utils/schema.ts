@@ -95,3 +95,24 @@ export const schema = yup
     streetName: yup.string().trim().required('Please input your street name'),
   })
   .required();
+
+export const loginSchema = yup.object({
+  email: yup.string().trim().required('Please input your email').email(),
+  password: yup
+    .string()
+    .trim()
+    .required('Please input your password')
+    .min(
+      VALIDATION_RULES.PASSWORD_LENGTH,
+      'Password must be at least 8 characters long'
+    )
+    .matches(
+      /^(?=.*[a-z]).+$/,
+      'Password must contain at least 1 lowercase letter'
+    )
+    .matches(
+      /^(?=.*[A-P]).+$/,
+      'Password must contain at least 1 uppercase letter'
+    )
+    .matches(/^(?=.*\d).+$/, 'Password must contain at least 1 number'),
+});
