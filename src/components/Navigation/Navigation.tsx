@@ -6,12 +6,17 @@ import useUserStore from '@store/userStore';
 const Navigation = () => {
   const navigate = useNavigate();
   const isAuth = useUserStore((state) => state.isAuth);
-
+  const updateId = useUserStore((state) => state.updateId);
+  const handleSignoutButtonClick = () => {
+    updateId('', false);
+  };
   return (
     <nav className={classes.nav}>
       <NavLink to="/">Home</NavLink>
       {isAuth ? (
-        <Button type="link">Sign out</Button>
+        <Button onClick={handleSignoutButtonClick} type="link">
+          Sign out
+        </Button>
       ) : (
         <>
           {' '}
