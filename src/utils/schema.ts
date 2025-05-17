@@ -54,7 +54,7 @@ export const schema = yup
         'Password must contain at least 1 lowercase letter'
       )
       .matches(
-        /^(?=.*[A-P]).+$/,
+        /^(?=.*[A-Z]).+$/,
         'Password must contain at least 1 uppercase letter'
       )
       .matches(/^(?=.*\d).+$/, 'Password must contain at least 1 number'),
@@ -111,7 +111,7 @@ export const loginSchema = yup.object({
       'Password must contain at least 1 lowercase letter'
     )
     .matches(
-      /^(?=.*[A-P]).+$/,
+      /^(?=.*[A-Z]).+$/,
       'Password must contain at least 1 uppercase letter'
     )
     .matches(/^(?=.*\d).+$/, 'Password must contain at least 1 number'),
