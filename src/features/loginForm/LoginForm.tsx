@@ -5,7 +5,7 @@ import useUserStore from '@store/userStore';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormField from '@components/FormField/FormField';
-import { schemaLogin } from '@utils/schema';
+import { loginSchema } from '@utils/schema';
 import { LoginFormValues } from 'types/authentication';
 import loginCustomer from '@utils/loginCustomer';
 
@@ -22,7 +22,7 @@ const LoginForm = () => {
     handleSubmit,
     formState: { isValid },
   } = useForm<LoginFormValues>({
-    resolver: yupResolver(schemaLogin),
+    resolver: yupResolver(loginSchema),
     mode: 'onChange',
   });
 

@@ -96,7 +96,7 @@ export const schema = yup
   })
   .required();
 
-export const schemaLogin = yup.object({
+export const loginSchema = yup.object({
   email: yup.string().trim().required('Please input your email').email(),
   password: yup
     .string()
