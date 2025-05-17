@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormField from '@components/FormField/FormField';
 import { schemaLogin } from '@utils/schema';
-import { UserLogin, LoginFormValues } from 'types/authentication';
+import { LoginFormValues } from 'types/authentication';
 import loginCustomer from '@utils/loginCustomer';
 
 const LoginForm = () => {
@@ -35,11 +35,11 @@ const LoginForm = () => {
         ])
       );
       const { email, password } = trimmedValues;
-      const user: UserLogin = {
+      const customer: LoginFormValues = {
         email,
         password,
       };
-      const response = await loginCustomer(user);
+      const response = await loginCustomer(customer);
       navigate('/');
       console.log(response);
       updateId(response.body.customer.id, true);
@@ -65,7 +65,7 @@ const LoginForm = () => {
         />
       )}
       <p>
-        No account? <Link to="/signup">Sign up</Link>
+        Don’t have an accout yet? <Link to="/signup">Sign up</Link>
       </p>
       <Form variant="underlined" onFinish={handleSubmit(onSubmit)}>
         <FormField name="email" placeholder="Email address" control={control} />
