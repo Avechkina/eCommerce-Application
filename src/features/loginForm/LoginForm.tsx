@@ -1,6 +1,6 @@
 import { Alert, Button, Form, Input } from 'antd';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import useUserStore from '@store/userStore';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,7 +10,6 @@ import { LoginFormValues } from 'types/authentication';
 import loginCustomer from '@utils/loginCustomer';
 
 const LoginForm = () => {
-  const navigate = useNavigate();
   const [error, setError] = useState({
     message: '',
     visible: false,
@@ -40,7 +39,6 @@ const LoginForm = () => {
         password,
       };
       const response = await loginCustomer(customer);
-      navigate('/');
       console.log(response);
       updateId(response.body.customer.id, true);
     } catch (error) {

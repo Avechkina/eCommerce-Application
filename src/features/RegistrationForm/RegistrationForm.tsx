@@ -2,7 +2,7 @@ import { CustomerDraft, FormValues } from 'types/registration';
 import { Alert, AutoComplete, Button, DatePicker, Form, Input } from 'antd';
 import { useMemo, useState } from 'react';
 import createCustomer from '@utils/createCustomer';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import useUserStore from '@store/userStore';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 import { COUNTRIES } from '@utils/countries';
 
 const RegistrationForm = () => {
-  const navigate = useNavigate();
   const [error, setError] = useState({
     message: '',
     visible: false,
@@ -64,7 +63,6 @@ const RegistrationForm = () => {
           addresses: [{ country: countryCode, city, postalCode, streetName }],
         };
         const response = await createCustomer(customer);
-        navigate('/');
         updateId(response.body.customer.id, true);
         console.log(response);
       }
