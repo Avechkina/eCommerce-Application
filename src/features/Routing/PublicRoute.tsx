@@ -8,7 +8,7 @@ const PublicRoute = () => {
 
   useEffect(() => {
     if (isAuth) {
-      navigate('/');
+      navigate('/', { replace: true });
     }
   }, [isAuth, navigate]);
 
