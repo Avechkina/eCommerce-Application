@@ -4,35 +4,20 @@ import {
   Control,
   Controller,
   ControllerRenderProps,
-  FieldPath,
+  Path,
   RegisterOptions,
 } from 'react-hook-form';
-// import { FormValues } from 'types/registration';
-
-// type Props = {
-//   name: keyof FormValues;
-//   placeholder?: string;
-//   label?: string;
-//   control: Control<FormValues>;
-//   rules?: Omit<
-//     RegisterOptions<FormValues, keyof FormValues>,
-//     'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
-//   >;
-//   renderItem?: (
-//     field: ControllerRenderProps<FormValues, keyof FormValues>
-//   ) => ReactNode;
-// };
 
 type FormFieldProps<T extends object> = {
-  name: FieldPath<T>;
+  name: Path<T>;
   placeholder?: string;
   label?: string;
   control: Control<T>;
   rules?: Omit<
-    RegisterOptions<T, FieldPath<T>>,
+    RegisterOptions<T, Path<T>>,
     'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
   >;
-  renderItem?: (field: ControllerRenderProps<T, FieldPath<T>>) => ReactNode;
+  renderItem?: (field: ControllerRenderProps<T, Path<T>>) => ReactNode;
 };
 
 const FormField = <T extends object>({
