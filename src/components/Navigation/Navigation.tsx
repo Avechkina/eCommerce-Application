@@ -13,6 +13,9 @@ const Navigation = () => {
   return (
     <nav className={classes.nav}>
       <NavLink to="/">Home</NavLink>
+      <NavLink to="/shop">Shop</NavLink>
+      <NavLink to="/product">Product</NavLink>
+      <NavLink to="/about">About us</NavLink>
       {isAuth ? (
         <Button onClick={handleSignoutButtonClick} type="link">
           Sign out

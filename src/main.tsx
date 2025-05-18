@@ -9,6 +9,9 @@ import SignIn from './routes/SignIn.tsx';
 import NotFound from './routes/404.tsx';
 import '@ant-design/v5-patch-for-react-19';
 import PublicRoute from '@features/Routing/PublicRoute.tsx';
+import Shop from './routes/shop.tsx';
+import Product from './routes/Product.tsx';
+import About from './routes/About.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,6 +22,9 @@ createRoot(document.getElementById('root')!).render(
           <Route element={<PublicRoute />}>
             <Route path="signup" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
+            <Route path="shop" element={<Shop />} />
+            <Route path="product" element={<Product />} />
+            <Route path="about" element={<About />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
