@@ -19,12 +19,12 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route element={<ShopLayout />}>
           <Route path="/" element={<App />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="product" element={<Product />} />
+          <Route path="about" element={<About />} />
           <Route element={<PublicRoute />}>
             <Route path="signup" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
-            <Route path="shop" element={<Shop />} />
-            <Route path="product" element={<Product />} />
-            <Route path="about" element={<About />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
