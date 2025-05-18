@@ -9,7 +9,7 @@ import SignIn from './routes/SignIn.tsx';
 import NotFound from './routes/404.tsx';
 import '@ant-design/v5-patch-for-react-19';
 import PublicRoute from '@features/Routing/PublicRoute.tsx';
-import Shop from './routes/shop.tsx';
+import Shop from './routes/Shop.tsx';
 import Product from './routes/Product.tsx';
 import About from './routes/About.tsx';
 

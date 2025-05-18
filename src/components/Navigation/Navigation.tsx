@@ -7,6 +7,7 @@ import {
   LogoutOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
+import BurgerMenu from '@components/BurgerMenu/BurgerMenu';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Navigation = () => {
   };
   return (
     <nav className={classes.nav}>
+      <BurgerMenu />
       <h2 className={classes.logo}>FutureTech.</h2>
       <div className={classes.link_wrapper}>
         <NavLink to="/">Home</NavLink>
