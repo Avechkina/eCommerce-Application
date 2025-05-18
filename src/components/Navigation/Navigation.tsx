@@ -17,37 +17,42 @@ const Navigation = () => {
   };
   return (
     <nav className={classes.nav}>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/shop">Shop</NavLink>
-      <NavLink to="/product">Product</NavLink>
-      <NavLink to="/about">About us</NavLink>
-      {isAuth ? (
-        <Tooltip title="Sign out">
-          <Button
-            icon={<LogoutOutlined />}
-            onClick={handleSignoutButtonClick}
-            type="link"
-          ></Button>
-        </Tooltip>
-      ) : (
-        <>
-          {' '}
-          <Tooltip title="Sign in">
+      <h2 className={classes.logo}>FutureTech.</h2>
+      <div className={classes.link_wrapper}>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/shop">Shop</NavLink>
+        <NavLink to="/product">Product</NavLink>
+        <NavLink to="/about">About us</NavLink>
+      </div>
+      <div className={classes.icon_wrapper}>
+        {isAuth ? (
+          <Tooltip title="Sign out">
             <Button
-              icon={<LoginOutlined />}
-              onClick={() => navigate('/signin')}
+              icon={<LogoutOutlined />}
+              onClick={handleSignoutButtonClick}
               type="link"
             ></Button>
           </Tooltip>
-          <Tooltip title="Sign up">
-            <Button
-              icon={<UserAddOutlined />}
-              onClick={() => navigate('/signup')}
-              type="link"
-            ></Button>
-          </Tooltip>
-        </>
-      )}
+        ) : (
+          <>
+            {' '}
+            <Tooltip title="Sign in">
+              <Button
+                icon={<LoginOutlined />}
+                onClick={() => navigate('/signin')}
+                type="link"
+              ></Button>
+            </Tooltip>
+            <Tooltip title="Sign up">
+              <Button
+                icon={<UserAddOutlined />}
+                onClick={() => navigate('/signup')}
+                type="link"
+              ></Button>
+            </Tooltip>
+          </>
+        )}
+      </div>
     </nav>
   );
 };
