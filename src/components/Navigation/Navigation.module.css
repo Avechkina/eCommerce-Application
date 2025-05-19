@@ -8,7 +8,7 @@
 .logo {
   margin: 0;
   flex: 0;
-  cursor: default;
+  cursor: pointer;
 }
 
 .link_wrapper {

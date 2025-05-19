@@ -19,7 +19,7 @@ const Navigation = () => {
   return (
     <nav className={classes.nav}>
       <BurgerMenu />
-      <h2 className={classes.logo}>FutureTech.</h2>
+      <h2 className={classes.logo} onClick={() => navigate('/')}>FutureTech.</h2>
       <div className={classes.link_wrapper}>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/shop">Shop</NavLink>
