@@ -1,35 +1,56 @@
-import { CustomerDraft, FormValues } from 'types/registration';
-import { Alert, AutoComplete, Button, DatePicker, Form, Input } from 'antd';
-import { useMemo, useState } from 'react';
+import { Address, CustomerDraft, FormValues } from 'types/registration';
+import { Alert, Button, Checkbox, DatePicker, Form, Input } from 'antd';
+import { useEffect, useState } from 'react';
 import createCustomer from '@utils/createCustomer';
 import { Link } from 'react-router';
 import useUserStore from '@store/userStore';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormField from '@components/FormField/FormField';
 import { schema } from '@utils/schema';
 import dayjs from 'dayjs';
 import { COUNTRIES } from '@utils/countries';
 import classes from './RegestrationForm.module.css';
+import AddressFieldGroup from '@components/AddressFieldGroup/AddressFieldGroup';
 
 const RegistrationForm = () => {
   const [error, setError] = useState({
     message: '',
     visible: false,
   });
+  const [isChecked, setIsChecked] = useState(false);
+  const [isDefault, setIsDefault] = useState({
+    shipping: false,
+    billing: false,
+  });
   const updateId = useUserStore((state) => state.updateId);
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { isValid },
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
-  const countryOptions = useMemo(
-    () => COUNTRIES.map((country) => ({ value: country.value })),
-    []
-  );
+
+  const shippingAddress = useWatch({
+    control,
+    name: ['country', 'city', 'postalCode', 'streetName'],
+  });
+
+  useEffect(() => {
+    if (isChecked && shippingAddress) {
+      setValue('billingCountry', shippingAddress[0], { shouldValidate: true });
+      setValue('billingCity', shippingAddress[1], { shouldValidate: true });
+      setValue('billingPostalCode', shippingAddress[2], {
+        shouldValidate: true,
+      });
+      setValue('billingStreetName', shippingAddress[3], {
+        shouldValidate: true,
+      });
+    }
+  }, [isChecked, shippingAddress, setValue]);
 
   const dateFormat = 'YYYY-MM-DD';
 
@@ -51,9 +72,36 @@ const RegistrationForm = () => {
         city,
         postalCode,
         streetName,
+        billingCountry,
+        billingCity,
+        billingPostalCode,
+        billingStreetName,
       } = trimmedValues;
       const countryCode = COUNTRIES.find((c) => c.value === country)?.code;
-      if (countryCode) {
+      const billingCountryCode = isChecked
+        ? countryCode
+        : COUNTRIES.find((c) => c.value === billingCountry)?.code;
+
+      if (countryCode && billingCountryCode) {
+        const shippingAddress: Address = {
+          country: countryCode,
+          city,
+          postalCode,
+          streetName,
+        };
+        const billingAddress: Address = {
+          country: billingCountryCode,
+          city: billingCity,
+          postalCode: billingPostalCode,
+          streetName: billingStreetName,
+        };
+        const addresses = isChecked
+          ? [shippingAddress]
+          : [shippingAddress, billingAddress];
+        let defaultBillingAddress: number | undefined = undefined;
+        if (isDefault.billing) {
+          defaultBillingAddress = isChecked ? 0 : 1;
+        }
         const customer: CustomerDraft = {
           key: crypto.randomUUID(),
           firstName,
@@ -61,7 +109,9 @@ const RegistrationForm = () => {
           dateOfBirth,
           email,
           password,
-          addresses: [{ country: countryCode, city, postalCode, streetName }],
+          addresses,
+          defaultShippingAddress: isDefault.shipping ? 0 : undefined,
+          defaultBillingAddress: defaultBillingAddress,
         };
         const response = await createCustomer(customer);
         updateId(response.body.customer.id, true);
@@ -76,6 +126,10 @@ const RegistrationForm = () => {
 
   const handleClose = () => {
     setError({ message: '', visible: false });
+  };
+
+  const handleCheck = () => {
+    setIsChecked(!isChecked);
   };
 
   return (
@@ -125,26 +179,24 @@ const RegistrationForm = () => {
             <Input.Password {...field} placeholder="Password" />
           )}
         />
-        <FormField
-          name="country"
+        <AddressFieldGroup
+          title="Shipping address"
           control={control}
-          renderItem={(field) => (
-            <AutoComplete
-              {...field}
-              options={countryOptions}
-              filterOption
-              style={{ textAlign: 'start' }}
-              placeholder="Country"
-            />
-          )}
+          onChange={() =>
+            setIsDefault({ ...isDefault, shipping: !isDefault.shipping })
+          }
         />
-        <FormField name="city" placeholder="City" control={control} />
-        <FormField
-          name="postalCode"
-          placeholder="Postal code"
+        <Checkbox onChange={handleCheck}>
+          Use the same address for billing and shipping
+        </Checkbox>
+        <AddressFieldGroup
+          title="Billing address"
+          isShipping={false}
           control={control}
+          onChange={() =>
+            setIsDefault({ ...isDefault, billing: !isDefault.billing })
+          }
         />
-        <FormField name="streetName" placeholder="Street" control={control} />
         <Form.Item>
           <Button disabled={!isValid} type="primary" htmlType="submit">
             Sign Up

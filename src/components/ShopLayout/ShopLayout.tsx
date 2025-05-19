@@ -1,11 +1,10 @@
 import Header from '@components/Header/Header';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router';
-import classes from './ShopLayout.module.css';
 
 const ShopLayout = () => {
   return (
-    <Layout className={classes.main}>
+    <Layout>
       <Header />
       <Outlet />
     </Layout>

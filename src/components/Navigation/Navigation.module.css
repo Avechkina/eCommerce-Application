@@ -1,27 +1,6 @@
 .nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 0.4rem;
-}
-
-.logo {
-  margin: 0;
-  flex: 0;
-  cursor: pointer;
-}
-
-.link_wrapper {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  gap: 0.6rem;
-  @media (width < 575px) {
-    display: none;
-  }
-}
-
-.icon_wrapper {
-  flex: 0;
-  display: flex;
 }
