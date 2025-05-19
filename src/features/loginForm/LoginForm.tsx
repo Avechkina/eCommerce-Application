@@ -8,6 +8,7 @@ import FormField from '@components/FormField/FormField';
 import { loginSchema } from '@utils/schema';
 import { LoginFormValues } from 'types/authentication';
 import loginCustomer from '@utils/loginCustomer';
+import classes from './LoginForm.module.css';
 
 const LoginForm = () => {
   const [error, setError] = useState({
@@ -66,7 +67,11 @@ const LoginForm = () => {
       <p>
         Don’t have an accout yet? <Link to="/signup">Sign up</Link>
       </p>
-      <Form variant="underlined" onFinish={handleSubmit(onSubmit)}>
+      <Form
+        variant="underlined"
+        onFinish={handleSubmit(onSubmit)}
+        className={classes.form_login}
+      >
         <FormField name="email" placeholder="Email address" control={control} />
         <FormField
           name="password"
