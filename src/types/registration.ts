@@ -7,7 +7,9 @@ export type CustomerDraft = {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  addresses?: [Address];
+  addresses?: Address[];
+  defaultShippingAddress?: number;
+  defaultBillingAddress?: number;
 };
 
 export type Address = {
@@ -32,4 +34,8 @@ export type FormValues = {
   city: string;
   postalCode: string;
   streetName: string;
+  billingCountry: string;
+  billingCity: string;
+  billingPostalCode: string;
+  billingStreetName: string;
 };
