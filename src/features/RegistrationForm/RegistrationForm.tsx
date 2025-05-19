@@ -10,6 +10,7 @@ import FormField from '@components/FormField/FormField';
 import { schema } from '@utils/schema';
 import dayjs from 'dayjs';
 import { COUNTRIES } from '@utils/countries';
+import classes from './RegestrationForm.module.css';
 import AddressFieldGroup from '@components/AddressFieldGroup/AddressFieldGroup';
 
 const RegistrationForm = () => {
@@ -144,7 +145,11 @@ const RegistrationForm = () => {
       <p>
         Already have an account? <Link to="/signin">Sign in</Link>
       </p>
-      <Form variant="underlined" onFinish={handleSubmit(onSubmit)}>
+      <Form
+        variant="underlined"
+        onFinish={handleSubmit(onSubmit)}
+        className={classes.form_registration}
+      >
         <FormField
           name="firstName"
           placeholder="First name"
