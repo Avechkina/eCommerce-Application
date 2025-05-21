@@ -1,4 +1,4 @@
-import { Alert, Button, Form, Input } from 'antd';
+import { Alert, Button, Form, Input, message } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import useUserStore from '@store/userStore';
@@ -41,8 +41,12 @@ const LoginForm = () => {
         password,
       };
       const response = await loginCustomer(customer);
+      message.success({
+        content: `Login successful! Welcome back ${response.body.customer.firstName}.`,
+        duration: 1,
+        onClose: () => updateId(response.body.customer.id, true),
+      });
       console.log(response);
-      updateId(response.body.customer.id, true);
     } catch (error) {
       if (error instanceof Error) {
         setError({ message: error.message, visible: true });
