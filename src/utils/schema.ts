@@ -138,7 +138,10 @@ export const schema = yup
         (value) => !value || value.trim() === value
       )
       .required('Please input your email')
-      .email(),
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        'Invalid email'
+      ),
     password: yup
       .string()
       .trim()
@@ -176,7 +179,10 @@ export const loginSchema = yup.object({
       (value) => !value || value.trim() === value
     )
     .required('Please input your email')
-    .email(),
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      'Invalid email'
+    ),
   password: yup
     .string()
     .trim()
