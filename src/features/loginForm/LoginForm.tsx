@@ -42,7 +42,7 @@ const LoginForm = () => {
       };
       const response = await loginCustomer(customer);
       message.success({
-        content: `Login successful! Welcome back ${response.body.customer.firstName}.`,
+        content: `Login successful! Welcome back, ${response.body.customer.firstName}.`,
         duration: 1,
         onClose: () => updateId(response.body.customer.id, true),
       });

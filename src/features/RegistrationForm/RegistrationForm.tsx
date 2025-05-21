@@ -123,7 +123,7 @@ const RegistrationForm = () => {
         };
         const response = await createCustomer(customer);
         message.success({
-          content: `Registration successful! Welcome aboard ${response.body.customer.firstName}.`,
+          content: `Registration successful! Welcome aboard, ${response.body.customer.firstName}.`,
           duration: 1,
           onClose: () => updateId(response.body.customer.id, true),
         });
