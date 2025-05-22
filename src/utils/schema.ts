@@ -12,7 +12,7 @@ const countrySchema = yup
   .required('Please select your country')
   .test(
     'no-leading-space',
-    'Value cannot start with a space',
+    'Value must not contain leading or trailing whitespace',
     (value) => !value || value.trim() === value
   )
   .test(
@@ -25,7 +25,7 @@ const citySchema = yup
   .required('Please input your city name')
   .test(
     'no-leading-space',
-    'Value cannot start with a space',
+    'Value must not contain leading or trailing whitespace',
     (value) => !value || value.trim() === value
   )
   .matches(/^[A-Za-z]+$/, 'City name must contain only letters');
@@ -35,7 +35,7 @@ const postalCodeSchema = yup
   .required('Please input your postal code')
   .test(
     'no-leading-space',
-    'Value cannot start with a space',
+    'Value must not contain leading or trailing whitespace',
     (value) => !value || value.trim() === value
   )
   .when('country', {
@@ -60,7 +60,7 @@ const billingPostalCodeSchema = yup
   .required('Please input your postal code')
   .test(
     'no-leading-space',
-    'Value cannot start with a space',
+    'Value must not contain leading or trailing whitespace',
     (value) => !value || value.trim() === value
   )
   .when('billingCountry', {
@@ -85,7 +85,7 @@ const streetNameSchema = yup
   .required('Please input your street name')
   .test(
     'no-leading-space',
-    'Value cannot start with a space',
+    'Value must not contain leading or trailing whitespace',
     (value) => !value || value.trim() === value
   );
 
@@ -96,7 +96,7 @@ export const schema = yup
       .required('Please input your first name')
       .test(
         'no-leading-space',
-        'Value cannot start with a space',
+        'Value must not contain leading or trailing whitespace',
         (value) => !value || value.trim() === value
       )
       .matches(/^[A-Za-z]+$/, 'Name must contain only letters')
@@ -106,7 +106,7 @@ export const schema = yup
       .required('Please input your last name')
       .test(
         'no-leading-space',
-        'Value cannot start with a space',
+        'Value must not contain leading or trailing whitespace',
         (value) => !value || value.trim() === value
       )
       .matches(/^[A-Za-z]+$/, 'Last name must contain only letters')
@@ -134,15 +134,22 @@ export const schema = yup
       .string()
       .test(
         'no-leading-space',
-        'Value cannot start with a space',
+        'Value must not contain leading or trailing whitespace',
         (value) => !value || value.trim() === value
       )
       .required('Please input your email')
-      .email(),
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        'Invalid email'
+      ),
     password: yup
       .string()
-      .trim()
       .required('Please input your password')
+      .test(
+        'no-leading-space',
+        'Value must not contain leading or trailing whitespace',
+        (value) => !value || value.trim() === value
+      )
       .min(
         VALIDATION_RULES.PASSWORD_LENGTH,
         'Password must be at least 8 characters long'
@@ -172,15 +179,22 @@ export const loginSchema = yup.object({
     .string()
     .test(
       'no-leading-space',
-      'Value cannot start with a space',
+      'Value must not contain leading or trailing whitespace',
       (value) => !value || value.trim() === value
     )
     .required('Please input your email')
-    .email(),
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      'Invalid email'
+    ),
   password: yup
     .string()
-    .trim()
     .required('Please input your password')
+    .test(
+      'no-leading-space',
+      'Value must not contain leading or trailing whitespace',
+      (value) => !value || value.trim() === value
+    )
     .min(
       VALIDATION_RULES.PASSWORD_LENGTH,
       'Password must be at least 8 characters long'

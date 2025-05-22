@@ -1,5 +1,13 @@
 import { Address, CustomerDraft, FormValues } from 'types/registration';
-import { Alert, Button, Checkbox, DatePicker, Form, Input } from 'antd';
+import {
+  Alert,
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  message,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import createCustomer from '@utils/createCustomer';
 import { Link } from 'react-router';
@@ -114,7 +122,11 @@ const RegistrationForm = () => {
           defaultBillingAddress: defaultBillingAddress,
         };
         const response = await createCustomer(customer);
-        updateId(response.body.customer.id, true);
+        message.success({
+          content: `Registration successful! Welcome aboard, ${response.body.customer.firstName}.`,
+          duration: 1,
+          onClose: () => updateId(response.body.customer.id, true),
+        });
         console.log(response);
       }
     } catch (error) {

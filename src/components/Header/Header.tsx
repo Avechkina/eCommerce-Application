@@ -1,9 +1,9 @@
 import Navigation from '@components/Navigation/Navigation';
-import './Header.module.css';
+import classes from './Header.module.css';
 
 const Header = () => {
   return (
-    <header>
+    <header className={classes.header}>
       <Navigation />
     </header>
   );
