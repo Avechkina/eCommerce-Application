@@ -6,6 +6,7 @@ import {
   LoginOutlined,
   LogoutOutlined,
   UserAddOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import BurgerMenu from '@components/BurgerMenu/BurgerMenu';
 
@@ -26,18 +27,27 @@ const Navigation = () => {
       <div className={classes.link_wrapper}>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/shop">Shop</NavLink>
-        <NavLink to="/product">Product</NavLink>
+        <NavLink to="/catalog">Catalog</NavLink>
         <NavLink to="/about">About us</NavLink>
       </div>
       <div className={classes.icon_wrapper}>
         {isAuth ? (
-          <Tooltip title="Sign out">
-            <Button
-              icon={<LogoutOutlined />}
-              onClick={handleSignoutButtonClick}
-              type="link"
-            ></Button>
-          </Tooltip>
+          <>
+            <Tooltip title="Sign out">
+              <Button
+                icon={<LogoutOutlined />}
+                onClick={handleSignoutButtonClick}
+                type="link"
+              ></Button>
+            </Tooltip>
+            <Tooltip title="User profile">
+              <Button
+                icon={<UserOutlined />}
+                onClick={() => navigate('/profile')}
+                type="link"
+              ></Button>
+            </Tooltip>
+          </>
         ) : (
           <>
             {' '}

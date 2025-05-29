@@ -12,6 +12,12 @@ import PublicRoute from '@features/Routing/PublicRoute.tsx';
 import Shop from './routes/Shop.tsx';
 import Product from './routes/Product.tsx';
 import About from './routes/About.tsx';
+import CatalogLayout from '@features/Catalog/CatalogLayout/CatalogLayout.tsx';
+import CatalogHome from '@features/Catalog/CatalogHome/CatalogHome.tsx';
+import CategoryView from '@features/Catalog/CategoryView/CategoryView.tsx';
+import SubcategoryView from '@features/Catalog/SubcategoryView/SubcategoryView.tsx';
+import Profile from './routes/Profile.tsx';
+import PrivateRoute from '@features/Routing/PrivateRoute.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -20,11 +26,25 @@ createRoot(document.getElementById('root')!).render(
         <Route element={<ShopLayout />}>
           <Route path="/" element={<App />} />
           <Route path="shop" element={<Shop />} />
-          <Route path="product" element={<Product />} />
+          <Route path="catalog" element={<CatalogLayout />}>
+            <Route index element={<CatalogHome />} />
+            <Route path=":categoryId" element={<CategoryView />} />
+            <Route
+              path=":categoryId/:subcategoryId"
+              element={<SubcategoryView />}
+            />
+            <Route
+              path=":categoryId/:subcategoryId/:productId"
+              element={<Product />}
+            />
+          </Route>
           <Route path="about" element={<About />} />
           <Route element={<PublicRoute />}>
             <Route path="signup" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
+          </Route>
+          <Route element={<PrivateRoute />}>
+            <Route path="profile" element={<Profile />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
