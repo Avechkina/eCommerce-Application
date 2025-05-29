@@ -1,11 +1,7 @@
 import RegistrationForm from '@features/RegistrationForm/RegistrationForm';
 
 const SignUp = () => {
-  return (
-    <>
-      <RegistrationForm />
-    </>
-  );
+  return <RegistrationForm />;
 };
 
 export default SignUp;
