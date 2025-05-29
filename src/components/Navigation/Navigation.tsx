@@ -13,9 +13,9 @@ import BurgerMenu from '@components/BurgerMenu/BurgerMenu';
 const Navigation = () => {
   const navigate = useNavigate();
   const isAuth = useUserStore((state) => state.isAuth);
-  const updateId = useUserStore((state) => state.updateId);
+  const resetUser = useUserStore((state) => state.resetUser);
   const handleSignoutButtonClick = () => {
-    updateId('', false);
+    resetUser();
   };
 
   return (

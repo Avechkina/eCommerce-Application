@@ -16,7 +16,7 @@ const LoginForm = () => {
     visible: false,
   });
 
-  const updateId = useUserStore((state) => state.updateId);
+  const updateUser = useUserStore((state) => state.updateUser);
 
   const {
     control,
@@ -44,7 +44,7 @@ const LoginForm = () => {
       message.success({
         content: `Login successful! Welcome back, ${response.body.customer.firstName}.`,
         duration: 1,
-        onClose: () => updateId(response.body.customer.id, true),
+        onClose: () => updateUser(response.body.customer),
       });
       console.log(response);
     } catch (error) {

@@ -1,5 +1,7 @@
+import UserProfile from '@features/UserProfile/UserProfile';
+
 const Profile = () => {
-  return <h1>Profile page</h1>;
+  return <UserProfile />;
 };
 
 export default Profile;

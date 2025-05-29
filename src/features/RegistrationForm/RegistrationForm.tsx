@@ -31,7 +31,7 @@ const RegistrationForm = () => {
     shipping: false,
     billing: false,
   });
-  const updateId = useUserStore((state) => state.updateId);
+  const updateUser = useUserStore((state) => state.updateUser);
   const {
     control,
     handleSubmit,
@@ -125,7 +125,7 @@ const RegistrationForm = () => {
         message.success({
           content: `Registration successful! Welcome aboard, ${response.body.customer.firstName}.`,
           duration: 1,
-          onClose: () => updateId(response.body.customer.id, true),
+          onClose: () => updateUser(response.body.customer),
         });
         console.log(response);
       }
