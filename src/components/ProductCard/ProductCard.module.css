@@ -1,0 +1,35 @@
+.product_card_image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-position: cover;
+}
+
+.product_card_image {
+  margin-bottom: 8px;
+}
+
+.product_card {
+  color: #141718;
+  text-align-last: left;
+}
+
+.product_card_title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.product_card_price_container {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.line_through {
+  text-decoration: line-through;
+  color: #6c7275;
+}
+
+.discont_price {
+  margin-right: 12px;
+}
