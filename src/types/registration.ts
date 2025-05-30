@@ -39,3 +39,8 @@ export type FormValues = {
   billingPostalCode: string;
   billingStreetName: string;
 };
+
+export type AccountDetails = Pick<
+  FormValues,
+  'firstName' | 'lastName' | 'dateOfBirth'
+>;

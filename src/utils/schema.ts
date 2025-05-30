@@ -89,80 +89,87 @@ const streetNameSchema = yup
     (value) => !value || value.trim() === value
   );
 
+const firstNameShema = yup
+  .string()
+  .required('Please input your first name')
+  .test(
+    'no-leading-space',
+    'Value must not contain leading or trailing whitespace',
+    (value) => !value || value.trim() === value
+  )
+  .matches(/^[A-Za-z]+$/, 'Name must contain only letters')
+  .matches(/^[A-Z]/, 'Name must be capitalized');
+
+const lastNameSchema = yup
+  .string()
+  .required('Please input your last name')
+  .test(
+    'no-leading-space',
+    'Value must not contain leading or trailing whitespace',
+    (value) => !value || value.trim() === value
+  )
+  .matches(/^[A-Za-z]+$/, 'Last name must contain only letters')
+  .matches(/^[A-Z]/, 'Last name must be capitalized');
+
+const dateOfBirthSchema = yup
+  .string()
+  .transform((value, originalValue) => {
+    return originalValue == null ? undefined : value;
+  })
+  .required('Please input your date of birth')
+  .test(
+    'is 13 or older',
+    `You must be at least ${VALIDATION_RULES.MINIMUM_AGE} years old`,
+    (value) => {
+      if (!value) return true;
+      const birthDate = dayjs(value);
+      const thirteenYearsAgo = dayjs().subtract(
+        VALIDATION_RULES.MINIMUM_AGE,
+        'year'
+      );
+      return birthDate.isBefore(thirteenYearsAgo);
+    }
+  );
+
+const emailSchema = yup
+  .string()
+  .test(
+    'no-leading-space',
+    'Value must not contain leading or trailing whitespace',
+    (value) => !value || value.trim() === value
+  )
+  .required('Please input your email')
+  .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email');
+
+const passwordShema = yup
+  .string()
+  .required('Please input your password')
+  .test(
+    'no-leading-space',
+    'Value must not contain leading or trailing whitespace',
+    (value) => !value || value.trim() === value
+  )
+  .min(
+    VALIDATION_RULES.PASSWORD_LENGTH,
+    'Password must be at least 8 characters long'
+  )
+  .matches(
+    /^(?=.*[a-z]).+$/,
+    'Password must contain at least 1 lowercase letter'
+  )
+  .matches(
+    /^(?=.*[A-Z]).+$/,
+    'Password must contain at least 1 uppercase letter'
+  )
+  .matches(/^(?=.*\d).+$/, 'Password must contain at least 1 number');
+
 export const schema = yup
   .object({
-    firstName: yup
-      .string()
-      .required('Please input your first name')
-      .test(
-        'no-leading-space',
-        'Value must not contain leading or trailing whitespace',
-        (value) => !value || value.trim() === value
-      )
-      .matches(/^[A-Za-z]+$/, 'Name must contain only letters')
-      .matches(/^[A-Z]/, 'Name must be capitalized'),
-    lastName: yup
-      .string()
-      .required('Please input your last name')
-      .test(
-        'no-leading-space',
-        'Value must not contain leading or trailing whitespace',
-        (value) => !value || value.trim() === value
-      )
-      .matches(/^[A-Za-z]+$/, 'Last name must contain only letters')
-      .matches(/^[A-Z]/, 'Last name must be capitalized'),
-    dateOfBirth: yup
-      .string()
-      .transform((value, originalValue) => {
-        return originalValue == null ? undefined : value;
-      })
-      .required('Please input your date of birth')
-      .test(
-        'is 13 or older',
-        `You must be at least ${VALIDATION_RULES.MINIMUM_AGE} years old`,
-        (value) => {
-          if (!value) return true;
-          const birthDate = dayjs(value);
-          const thirteenYearsAgo = dayjs().subtract(
-            VALIDATION_RULES.MINIMUM_AGE,
-            'year'
-          );
-          return birthDate.isBefore(thirteenYearsAgo);
-        }
-      ),
-    email: yup
-      .string()
-      .test(
-        'no-leading-space',
-        'Value must not contain leading or trailing whitespace',
-        (value) => !value || value.trim() === value
-      )
-      .required('Please input your email')
-      .matches(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        'Invalid email'
-      ),
-    password: yup
-      .string()
-      .required('Please input your password')
-      .test(
-        'no-leading-space',
-        'Value must not contain leading or trailing whitespace',
-        (value) => !value || value.trim() === value
-      )
-      .min(
-        VALIDATION_RULES.PASSWORD_LENGTH,
-        'Password must be at least 8 characters long'
-      )
-      .matches(
-        /^(?=.*[a-z]).+$/,
-        'Password must contain at least 1 lowercase letter'
-      )
-      .matches(
-        /^(?=.*[A-Z]).+$/,
-        'Password must contain at least 1 uppercase letter'
-      )
-      .matches(/^(?=.*\d).+$/, 'Password must contain at least 1 number'),
+    firstName: firstNameShema,
+    lastName: lastNameSchema,
+    dateOfBirth: dateOfBirthSchema,
+    email: emailSchema,
+    password: passwordShema,
     country: countrySchema,
     city: citySchema,
     postalCode: postalCodeSchema,
@@ -175,37 +182,19 @@ export const schema = yup
   .required();
 
 export const loginSchema = yup.object({
-  email: yup
-    .string()
-    .test(
-      'no-leading-space',
-      'Value must not contain leading or trailing whitespace',
-      (value) => !value || value.trim() === value
-    )
-    .required('Please input your email')
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      'Invalid email'
-    ),
-  password: yup
-    .string()
-    .required('Please input your password')
-    .test(
-      'no-leading-space',
-      'Value must not contain leading or trailing whitespace',
-      (value) => !value || value.trim() === value
-    )
-    .min(
-      VALIDATION_RULES.PASSWORD_LENGTH,
-      'Password must be at least 8 characters long'
-    )
-    .matches(
-      /^(?=.*[a-z]).+$/,
-      'Password must contain at least 1 lowercase letter'
-    )
-    .matches(
-      /^(?=.*[A-Z]).+$/,
-      'Password must contain at least 1 uppercase letter'
-    )
-    .matches(/^(?=.*\d).+$/, 'Password must contain at least 1 number'),
+  email: emailSchema,
+  password: passwordShema,
+});
+
+export const accountSchema = yup.object({
+  firstName: firstNameShema,
+  lastName: lastNameSchema,
+  dateOfBirth: dateOfBirthSchema,
+});
+
+export const addressSchema = yup.object({
+  country: countrySchema,
+  city: citySchema,
+  postalCode: postalCodeSchema,
+  streetName: streetNameSchema,
 });

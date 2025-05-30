@@ -10,7 +10,6 @@ import {
 
 type FormFieldProps<T extends object> = {
   name: Path<T>;
-  value?: string;
   placeholder?: string;
   label?: string;
   control: Control<T>;
@@ -23,7 +22,6 @@ type FormFieldProps<T extends object> = {
 
 const FormField = <T extends object>({
   name,
-  value,
   placeholder,
   label,
   control,
@@ -44,7 +42,7 @@ const FormField = <T extends object>({
           {renderItem ? (
             renderItem(field)
           ) : (
-            <Input {...field} defaultValue={value} placeholder={placeholder} />
+            <Input {...field} placeholder={placeholder} />
           )}
         </Form.Item>
       )}

@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import { COUNTRIES } from '@utils/countries';
 import classes from './RegestrationForm.module.css';
 import AddressFieldGroup from '@components/AddressFieldGroup/AddressFieldGroup';
+import { DATE_FORMAT } from '@utils/constants';
 
 const RegistrationForm = () => {
   const [error, setError] = useState({
@@ -59,8 +60,6 @@ const RegistrationForm = () => {
       });
     }
   }, [isChecked, shippingAddress, setValue]);
-
-  const dateFormat = 'YYYY-MM-DD';
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
     try {
@@ -176,7 +175,7 @@ const RegistrationForm = () => {
               {...field}
               value={field.value ? dayjs(field.value) : undefined}
               onChange={(date) =>
-                field.onChange(date ? date.format(dateFormat) : undefined)
+                field.onChange(date ? date.format(DATE_FORMAT) : undefined)
               }
               disabledDate={(current) => current && current > dayjs()}
               placeholder="Date of birth"
@@ -192,6 +191,12 @@ const RegistrationForm = () => {
           )}
         />
         <AddressFieldGroup
+          fieldNames={{
+            country: 'country',
+            city: 'city',
+            postalCode: 'postalCode',
+            streetName: 'streetName',
+          }}
           title="Shipping address"
           control={control}
           onChange={() =>
@@ -202,8 +207,13 @@ const RegistrationForm = () => {
           Use the same address for billing and shipping
         </Checkbox>
         <AddressFieldGroup
+          fieldNames={{
+            country: 'billingCountry',
+            city: 'billingCity',
+            postalCode: 'billingPostalCode',
+            streetName: 'billingStreetName',
+          }}
           title="Billing address"
-          isShipping={false}
           control={control}
           onChange={() =>
             setIsDefault({ ...isDefault, billing: !isDefault.billing })

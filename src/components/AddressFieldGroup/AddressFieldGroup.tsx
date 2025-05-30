@@ -1,28 +1,29 @@
-import { Address } from '@commercetools/platform-sdk';
 import FormField from '@components/FormField/FormField';
 import { COUNTRIES } from '@utils/countries';
 import { AutoComplete, Checkbox, Typography } from 'antd';
 import { useMemo } from 'react';
-import { Control } from 'react-hook-form';
-import { FormValues } from 'types/registration';
+import { Control, Path } from 'react-hook-form';
 
-type Props = {
-  address?: Address;
+type Props<T extends object> = {
   title?: string;
-  control: Control<FormValues>;
-  isShipping?: boolean;
+  control: Control<T>;
   onChange?: () => void;
+  fieldNames: {
+    country: Path<T>;
+    city: Path<T>;
+    postalCode: Path<T>;
+    streetName: Path<T>;
+  };
 };
 
 const { Title } = Typography;
 
-const AddressFieldGroup = ({
-  address,
+const AddressFieldGroup = <T extends object>({
   title,
   control,
-  isShipping = true,
   onChange,
-}: Props) => {
+  fieldNames: { country, city, postalCode, streetName },
+}: Props<T>) => {
   const countryOptions = useMemo(
     () => COUNTRIES.map((country) => ({ value: country.value })),
     []
@@ -32,15 +33,11 @@ const AddressFieldGroup = ({
     <>
       {title && <Title level={5}>{title}</Title>}
       <FormField
-        name={isShipping ? 'country' : 'billingCountry'}
+        name={country}
         control={control}
         renderItem={(field) => (
           <AutoComplete
             {...field}
-            defaultValue={
-              COUNTRIES.find((country) => country.code === address?.country)
-                ?.value
-            }
             options={countryOptions}
             filterOption
             style={{ textAlign: 'start' }}
@@ -48,24 +45,13 @@ const AddressFieldGroup = ({
           />
         )}
       />
+      <FormField name={city} placeholder="City" control={control} />
       <FormField
-        name={isShipping ? 'city' : 'billingCity'}
-        value={address?.city}
-        placeholder="City"
-        control={control}
-      />
-      <FormField
-        name={isShipping ? 'postalCode' : 'billingPostalCode'}
-        value={address?.postalCode}
+        name={postalCode}
         placeholder="Postal code"
         control={control}
       />
-      <FormField
-        name={isShipping ? 'streetName' : 'billingStreetName'}
-        value={address?.streetName}
-        placeholder="Street"
-        control={control}
-      />
+      <FormField name={streetName} placeholder="Street" control={control} />
       {onChange && (
         <Checkbox onChange={onChange}>Set as default {title}</Checkbox>
       )}
