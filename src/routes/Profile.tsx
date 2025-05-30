@@ -1,7 +1,7 @@
-import UserProfile from '@features/UserProfile/UserProfile';
+import ProfileLayout from '@features/UserProfile/ProfileLayout/ProfileLayout';
 
 const Profile = () => {
-  return <UserProfile />;
+  return <ProfileLayout />;
 };
 
 export default Profile;

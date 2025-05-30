@@ -1,3 +1,4 @@
+import { Address } from '@commercetools/platform-sdk';
 import FormField from '@components/FormField/FormField';
 import { COUNTRIES } from '@utils/countries';
 import { AutoComplete, Checkbox, Typography } from 'antd';
@@ -6,15 +7,17 @@ import { Control } from 'react-hook-form';
 import { FormValues } from 'types/registration';
 
 type Props = {
-  title: string;
+  address?: Address;
+  title?: string;
   control: Control<FormValues>;
   isShipping?: boolean;
-  onChange: () => void;
+  onChange?: () => void;
 };
 
 const { Title } = Typography;
 
 const AddressFieldGroup = ({
+  address,
   title,
   control,
   isShipping = true,
@@ -27,13 +30,17 @@ const AddressFieldGroup = ({
 
   return (
     <>
-      <Title level={5}>{title}</Title>
+      {title && <Title level={5}>{title}</Title>}
       <FormField
         name={isShipping ? 'country' : 'billingCountry'}
         control={control}
         renderItem={(field) => (
           <AutoComplete
             {...field}
+            defaultValue={
+              COUNTRIES.find((country) => country.code === address?.country)
+                ?.value
+            }
             options={countryOptions}
             filterOption
             style={{ textAlign: 'start' }}
@@ -43,20 +50,25 @@ const AddressFieldGroup = ({
       />
       <FormField
         name={isShipping ? 'city' : 'billingCity'}
+        value={address?.city}
         placeholder="City"
         control={control}
       />
       <FormField
         name={isShipping ? 'postalCode' : 'billingPostalCode'}
+        value={address?.postalCode}
         placeholder="Postal code"
         control={control}
       />
       <FormField
         name={isShipping ? 'streetName' : 'billingStreetName'}
+        value={address?.streetName}
         placeholder="Street"
         control={control}
       />
-      <Checkbox onChange={onChange}>Set as default {title}</Checkbox>
+      {onChange && (
+        <Checkbox onChange={onChange}>Set as default {title}</Checkbox>
+      )}
     </>
   );
 };
