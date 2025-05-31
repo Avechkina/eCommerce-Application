@@ -10,7 +10,7 @@ import changePassword from '@utils/changePassword';
 import loginCustomer from '@utils/loginCustomer';
 import { passwordFormSchema } from '@utils/schema';
 import { tokenStore } from '@utils/tokenStore';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Flex, Form, Input, message } from 'antd';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { LoginFormValues } from 'types/authentication';
@@ -70,7 +70,11 @@ const ProfilePasswordForm = () => {
     }
   };
 
-  return (
+  return disabled ? (
+    <Button disabled={false} onClick={() => setDisabled(false)}>
+      Change Password
+    </Button>
+  ) : (
     <Form
       onFinish={handleSubmit(onSubmit)}
       disabled={disabled}
@@ -91,21 +95,20 @@ const ProfilePasswordForm = () => {
           <Input.Password {...field} placeholder="New password" />
         )}
       />
-      {disabled ? (
-        <Button
-          disabled={false}
-          onClick={(e) => {
-            e.preventDefault();
-            setDisabled(false);
-          }}
-        >
-          Edit
-        </Button>
-      ) : (
+      <Flex gap="small">
         <Button disabled={!isValid} htmlType="submit">
           Save changes
         </Button>
-      )}
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            setDisabled(true);
+            reset();
+          }}
+        >
+          Cancel
+        </Button>
+      </Flex>
     </Form>
   );
 };

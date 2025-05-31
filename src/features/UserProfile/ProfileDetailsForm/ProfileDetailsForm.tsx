@@ -7,7 +7,7 @@ import { DATE_FORMAT } from '@utils/constants';
 import { accountSchema } from '@utils/schema';
 import { tokenStore } from '@utils/tokenStore';
 import updateCustomer from '@utils/updateCustomer';
-import { Button, DatePicker, Form, message } from 'antd';
+import { Button, DatePicker, Flex, Form, message } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -106,19 +106,23 @@ const ProfileDetailsForm = () => {
       />
       <FormField name="email" placeholder="Email address" control={control} />
       {disabled ? (
-        <Button
-          disabled={false}
-          onClick={(e) => {
-            e.preventDefault();
-            setDisabled(false);
-          }}
-        >
-          Edit
-        </Button>
+        <Flex>
+          <Button
+            disabled={false}
+            onClick={(e) => {
+              e.preventDefault();
+              setDisabled(false);
+            }}
+          >
+            Edit
+          </Button>
+        </Flex>
       ) : (
-        <Button disabled={!isValid} htmlType="submit">
-          Save changes
-        </Button>
+        <Flex>
+          <Button disabled={!isValid} htmlType="submit">
+            Save changes
+          </Button>
+        </Flex>
       )}
     </Form>
   );
