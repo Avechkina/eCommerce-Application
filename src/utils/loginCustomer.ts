@@ -1,7 +1,10 @@
-import { apiRoot } from '@services/BuildClient';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
 import { LoginFormValues } from 'types/authentication';
 
-const loginCustomer = (customer: LoginFormValues) => {
+const loginCustomer = (
+  apiRoot: ByProjectKeyRequestBuilder,
+  customer: LoginFormValues
+) => {
   return apiRoot
     .me()
     .login()

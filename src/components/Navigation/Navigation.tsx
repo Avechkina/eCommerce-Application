@@ -16,6 +16,7 @@ const Navigation = () => {
   const resetUser = useUserStore((state) => state.resetUser);
   const handleSignoutButtonClick = () => {
     resetUser();
+    localStorage.removeItem('tokenCache');
   };
 
   return (
