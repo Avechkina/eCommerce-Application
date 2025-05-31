@@ -190,6 +190,7 @@ export const accountSchema = yup.object({
   firstName: firstNameShema,
   lastName: lastNameSchema,
   dateOfBirth: dateOfBirthSchema,
+  email: emailSchema,
 });
 
 export const addressSchema = yup.object({

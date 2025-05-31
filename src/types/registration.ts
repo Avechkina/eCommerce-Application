@@ -42,5 +42,5 @@ export type FormValues = {
 
 export type AccountDetails = Pick<
   FormValues,
-  'firstName' | 'lastName' | 'dateOfBirth'
+  'firstName' | 'lastName' | 'dateOfBirth' | 'email'
 >;

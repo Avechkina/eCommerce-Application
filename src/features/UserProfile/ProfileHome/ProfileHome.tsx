@@ -30,6 +30,7 @@ const ProfileHome = () => {
       firstName: user?.firstName,
       lastName: user?.lastName,
       dateOfBirth: user?.dateOfBirth,
+      email: user?.email,
     },
   });
 
@@ -39,11 +40,12 @@ const ProfileHome = () => {
     try {
       const refreshToken = tokenStore.get().refreshToken;
       if (!refreshToken) return;
-      const { firstName, lastName, dateOfBirth } = values;
+      const { firstName, lastName, dateOfBirth, email } = values;
       if (
         firstName === user.firstName &&
         lastName === user.lastName &&
-        dateOfBirth === user.dateOfBirth
+        dateOfBirth === user.dateOfBirth &&
+        email === user.email
       ) {
         message.info({
           content: `No changes made`,
@@ -56,6 +58,7 @@ const ProfileHome = () => {
       actions.push({ action: 'setFirstName', firstName });
       actions.push({ action: 'setLastName', lastName });
       actions.push({ action: 'setDateOfBirth', dateOfBirth });
+      actions.push({ action: 'changeEmail', email });
       const tokenClient = getTokenClient(refreshToken);
       const tokenApiRoot = getApiRoot(tokenClient);
       const response = await updateCustomer(
@@ -113,6 +116,11 @@ const ProfileHome = () => {
                 placeholder="Date of birth"
               />
             )}
+          />
+          <FormField
+            name="email"
+            placeholder="Email address"
+            control={control}
           />
           {disabled ? (
             <Button
