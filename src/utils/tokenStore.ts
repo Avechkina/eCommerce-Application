@@ -9,6 +9,13 @@ export class MyTokenCache implements TokenCache {
   private saveToken() {
     localStorage.setItem('tokenCache', JSON.stringify(this.myCache));
   }
+  public resetToken() {
+    this.set({
+      token: '',
+      expirationTime: 0,
+      refreshToken: '',
+    });
+  }
   public get(): TokenStore {
     const stored = localStorage.getItem('tokenCache');
     if (!stored) return this.myCache;

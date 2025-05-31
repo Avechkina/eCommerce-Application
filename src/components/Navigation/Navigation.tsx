@@ -9,6 +9,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import BurgerMenu from '@components/BurgerMenu/BurgerMenu';
+import { tokenStore } from '@utils/tokenStore';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Navigation = () => {
   const resetUser = useUserStore((state) => state.resetUser);
   const handleSignoutButtonClick = () => {
     resetUser();
-    localStorage.removeItem('tokenCache');
+    tokenStore.resetToken();
   };
 
   return (

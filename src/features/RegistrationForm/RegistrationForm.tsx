@@ -17,10 +17,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormField from '@components/FormField/FormField';
 import { schema } from '@utils/schema';
 import dayjs from 'dayjs';
-import { COUNTRIES } from '@utils/countries';
 import classes from './RegestrationForm.module.css';
 import AddressFieldGroup from '@components/AddressFieldGroup/AddressFieldGroup';
-import { DATE_FORMAT } from '@utils/constants';
+import { COUNTRIES, DATE_FORMAT } from '@utils/constants';
 
 const RegistrationForm = () => {
   const [error, setError] = useState({

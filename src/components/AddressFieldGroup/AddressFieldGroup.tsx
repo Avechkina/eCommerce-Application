@@ -1,5 +1,5 @@
 import FormField from '@components/FormField/FormField';
-import { COUNTRIES } from '@utils/countries';
+import { COUNTRIES } from '@utils/constants';
 import { AutoComplete, Checkbox, Typography } from 'antd';
 import { useMemo } from 'react';
 import { Control, Path } from 'react-hook-form';

@@ -10,7 +10,7 @@ import {
   Address as CommerceToolsAddress,
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk';
-import { COUNTRIES } from '@utils/countries';
+import { COUNTRIES } from '@utils/constants';
 import { Address } from 'types/registration';
 import { tokenStore } from '@utils/tokenStore';
 import { getApiRoot, getTokenClient } from '@services/BuildClient';

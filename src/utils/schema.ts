@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import dayjs from 'dayjs';
-import { COUNTRIES } from './countries';
+import { COUNTRIES } from '@utils/constants';
 
 const VALIDATION_RULES = {
   PASSWORD_LENGTH: 8,
@@ -198,4 +198,12 @@ export const addressSchema = yup.object({
   city: citySchema,
   postalCode: postalCodeSchema,
   streetName: streetNameSchema,
+});
+
+export const passwordFormSchema = yup.object({
+  password: passwordShema,
+  newPassword: passwordShema.notOneOf(
+    [yup.ref('password')],
+    'New password must be different from current password'
+  ),
 });
