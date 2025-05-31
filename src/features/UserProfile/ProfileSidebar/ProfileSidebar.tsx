@@ -23,7 +23,7 @@ const ProfileSidebar = () => {
     <Sider theme="light">
       <Menu
         items={items}
-        defaultSelectedKeys={[location.pathname]}
+        selectedKeys={[location.pathname]}
         onSelect={(e) => navigate(e.key)}
       />
     </Sider>

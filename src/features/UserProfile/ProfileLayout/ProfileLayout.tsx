@@ -1,6 +1,6 @@
 import { Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
-import ProfileSidebar from '../ProfileMenu/ProfileSidebar';
+import ProfileSidebar from '../ProfileSidebar/ProfileSidebar';
 import { Outlet } from 'react-router';
 
 const ProfileLayout = () => {
