@@ -105,8 +105,8 @@ const ProfileDetailsForm = () => {
         )}
       />
       <FormField name="email" placeholder="Email address" control={control} />
-      {disabled ? (
-        <Flex>
+      <Flex>
+        {disabled ? (
           <Button
             disabled={false}
             onClick={(e) => {
@@ -116,14 +116,12 @@ const ProfileDetailsForm = () => {
           >
             Edit
           </Button>
-        </Flex>
-      ) : (
-        <Flex>
+        ) : (
           <Button disabled={!isValid} htmlType="submit">
             Save changes
           </Button>
-        </Flex>
-      )}
+        )}
+      </Flex>
     </Form>
   );
 };
