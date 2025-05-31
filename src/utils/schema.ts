@@ -41,18 +41,12 @@ const postalCodeSchema = yup
   .when('country', {
     is: 'Georgia',
     then: (schema) =>
-      schema.matches(
-        /^\d{4}$/,
-        'Georgian postal code must be exactly 4 digits'
-      ),
+      schema.matches(/^\d{4}$/, 'Value must be exactly 4 digits'),
   })
   .when('country', {
     is: 'Belarus',
     then: (schema) =>
-      schema.matches(
-        /^\d{6}$/,
-        'Belarusian postal code must be exactly 6 digits'
-      ),
+      schema.matches(/^\d{6}$/, 'Value must be exactly 6 digits'),
   });
 
 const billingPostalCodeSchema = yup
