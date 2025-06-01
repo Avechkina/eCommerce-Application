@@ -2,7 +2,6 @@ import {
   ProductCard,
   TProductCardProps,
 } from '@components/ProductCard/ProductCard';
-import getCategories from '@utils/getCategories';
 import getProducts from '@utils/getProducts';
 import { useEffect, useState } from 'react';
 
@@ -23,9 +22,6 @@ const CatalogHome = () => {
                 (product.masterVariant.prices?.[0].value.fractionDigits ?? 2),
           })) ?? [];
         setProducts(formattedData);
-        console.log(getCategories());
-
-        console.log(response.body.results);
       } catch (error) {
         console.error(error);
       }
