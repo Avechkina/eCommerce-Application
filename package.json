@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "prepare": "husky",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "coverage": "vitest run --coverage"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -46,6 +47,8 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^3.1.2",
+    "@vitest/ui": "^3.1.2",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-react-hooks": "^5.2.0",
