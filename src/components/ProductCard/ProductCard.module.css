@@ -2,7 +2,7 @@
   display: block;
   width: 100%;
   height: auto;
-  background-position: cover;
+  object-fit: cover;
 }
 
 .product_card_image {
@@ -12,6 +12,21 @@
 .product_card {
   color: #141718;
   text-align-last: left;
+  min-width: 200px;
+  width: calc(33% - 16px);
+}
+
+@media (max-width: 900px) {
+  .product_card {
+    width: calc(50% - 16px);
+  }
+}
+
+@media (max-width: 650px) {
+  .product_card {
+    width: calc(50% - 16px);
+    width: 100%;
+  }
 }
 
 .product_card_title {
