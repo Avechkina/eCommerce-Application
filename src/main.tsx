@@ -28,13 +28,13 @@ createRoot(document.getElementById('root')!).render(
           <Route path="shop" element={<Shop />} />
           <Route path="catalog" element={<CatalogLayout />}>
             <Route index element={<CatalogHome />} />
-            <Route path=":categoryId" element={<CategoryView />} />
+            <Route path=":categoryName" element={<CategoryView />} />
             <Route
-              path=":categoryId/:subcategoryId"
+              path=":categoryName/:subcategoryName"
               element={<SubcategoryView />}
             />
             <Route
-              path=":categoryId/:subcategoryId/:productId"
+              path=":categoryName/:subcategoryName/:productName"
               element={<Product />}
             />
           </Route>
