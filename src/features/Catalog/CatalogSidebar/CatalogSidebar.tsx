@@ -1,53 +1,108 @@
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import useCategoryStore from '@store/categoryStore';
+import getCategories from '@utils/getCategories';
 import { Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 type MenuItem = Required<MenuProps>['items'][number];
-
-const items: MenuItem[] = [
-  {
-    key: 'sub1',
-    label: 'Category One',
-    icon: <MailOutlined />,
-    children: [
-      { key: '1', label: 'Option 1' },
-      { key: '2', label: 'Option 2' },
-      { key: '3', label: 'Option 3' },
-      { key: '4', label: 'Option 4' },
-    ],
-  },
-  {
-    key: 'sub2',
-    label: 'Category Two',
-    icon: <AppstoreOutlined />,
-    children: [
-      { key: '5', label: 'Option 5' },
-      { key: '6', label: 'Option 6' },
-    ],
-  },
-  {
-    key: 'sub3',
-    label: 'Category Three',
-    icon: <SettingOutlined />,
-    children: [
-      { key: '9', label: 'Option 9' },
-      { key: '10', label: 'Option 10' },
-      { key: '11', label: 'Option 11' },
-      { key: '12', label: 'Option 12' },
-    ],
-  },
-];
+type CustomMenuItem = MenuItem & {
+  slug?: string;
+  children?: CustomMenuItem[];
+};
 
 //Fetch categories using Commercetools SDK
 
+type TCategoryProps = {
+  id: string;
+  key?: string;
+  name: string;
+  slug?: string;
+  parent?: string;
+};
+
 const CatalogSidebar = () => {
+  const [items, setItems] = useState<CustomMenuItem[]>([]);
+  const navigate = useNavigate();
+  const setCategory = useCategoryStore((state) => state.setCategory);
+  const handleMenuItemClick = (
+    e: { key: string },
+    items: CustomMenuItem[]
+  ): void => {
+    let categoryItem = items.find((item) => item.key === e.key);
+    let subCategoryItem: CustomMenuItem | undefined = undefined;
+    if (!categoryItem) {
+      for (const item of items) {
+        subCategoryItem = item.children?.find((child) => child.key === e.key);
+        if (subCategoryItem) {
+          categoryItem = item;
+          break;
+        }
+      }
+    }
+
+    const targetSlug = subCategoryItem
+      ? `${categoryItem?.slug}/${subCategoryItem.slug}`
+      : categoryItem?.slug;
+    setCategory(e.key, subCategoryItem ? 'subcategory' : 'category');
+    navigate(`/catalog/${targetSlug}`);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getCategories();
+        const formattedData: TCategoryProps[] = response?.body.results.map(
+          (category) => ({
+            id: category.id,
+            key: category.key,
+            name: category.name['en-US'],
+            slug: category.slug?.['en-US'],
+            ...(category.parent && { parent: category.parent.id }),
+          })
+        );
+
+        const mainCategories = formattedData.filter(
+          (category) => !category.parent
+        );
+        const subCategories = formattedData.filter(
+          (category) => category.parent
+        );
+
+        setItems(
+          mainCategories.map((category) => {
+            const filteredChildren = subCategories
+              .filter(({ parent }) => parent === category.id)
+              .map((subCategory) => ({
+                key: subCategory.id,
+                label: subCategory.name,
+                slug: subCategory.slug,
+              }));
+
+            return {
+              key: category.id,
+              label: category.name,
+              slug: category.slug,
+              ...(filteredChildren.length > 0 && {
+                children: filteredChildren,
+              }),
+            };
+          })
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <Sider theme="light">
-      <Menu items={items} mode="inline" />
+      <Menu
+        onClick={(e) => handleMenuItemClick(e, items)}
+        items={items}
+        mode="inline"
+        style={{ textAlign: 'left' }}
+      />
     </Sider>
   );
 };
