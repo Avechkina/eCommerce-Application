@@ -20,6 +20,7 @@ const ProfileDetailsForm = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { isValid },
   } = useForm<AccountDetails>({
     resolver: yupResolver(accountSchema),
@@ -80,6 +81,17 @@ const ProfileDetailsForm = () => {
     }
   };
 
+  const cancelChanges = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault();
+    setDisabled(true);
+    reset({
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      dateOfBirth: user?.dateOfBirth,
+      email: user?.email,
+    });
+  };
+
   return (
     <Form
       onFinish={handleSubmit(onSubmit)}
@@ -105,7 +117,7 @@ const ProfileDetailsForm = () => {
         )}
       />
       <FormField name="email" placeholder="Email address" control={control} />
-      <Flex>
+      <Flex gap="small">
         {disabled ? (
           <Button
             disabled={false}
@@ -117,9 +129,14 @@ const ProfileDetailsForm = () => {
             Edit
           </Button>
         ) : (
-          <Button disabled={!isValid} htmlType="submit">
-            Save changes
-          </Button>
+          <>
+            <Button disabled={false} onClick={(e) => cancelChanges(e)}>
+              Cancel
+            </Button>
+            <Button disabled={!isValid} type="primary" htmlType="submit">
+              Save changes
+            </Button>
+          </>
         )}
       </Flex>
     </Form>

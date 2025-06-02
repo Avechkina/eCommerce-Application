@@ -96,9 +96,6 @@ const ProfilePasswordForm = () => {
         )}
       />
       <Flex gap="small">
-        <Button disabled={!isValid} htmlType="submit">
-          Save changes
-        </Button>
         <Button
           onClick={(e) => {
             e.preventDefault();
@@ -107,6 +104,9 @@ const ProfilePasswordForm = () => {
           }}
         >
           Cancel
+        </Button>
+        <Button disabled={!isValid} type="primary" htmlType="submit">
+          Save changes
         </Button>
       </Flex>
     </Form>
