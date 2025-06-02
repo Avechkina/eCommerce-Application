@@ -100,8 +100,8 @@ const ProductView = () => {
             ? product.description['en-US']
             : 'No description'}
         </Text>
-        <Title level={4}>{price?.formattedPrice}</Title>
-        <Text delete>{price?.discountedPrice}</Text>
+        <Title level={4}>{price?.discountedPrice}</Title>
+        <Text delete>{price?.formattedPrice}</Text>
       </div>
     </div>
   );
