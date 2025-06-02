@@ -6,24 +6,30 @@ export type TProductCardProps = {
   name: string;
   price: number;
   discont?: number;
+  description?: string;
 };
 
 export function ProductCard(props: TProductCardProps) {
-  const { image, name, price, discont } = props;
+  const { image, name, price, discont, description } = props;
   return (
     <>
       <div className={classes.product_card}>
         <div className={classes.product_card_image}>
           <img src={image} alt={`${name} image`} />
         </div>
-        <div className={classes.product_card_title}>{name}</div>
-        <div className={classes.product_card_price_container}>
-          {discont && <span className={classes.discont_price}>${discont}</span>}
-          <span
-            className={`${classes.regular_price} ${discont && classes.line_through}`}
-          >
-            ${price}
-          </span>
+        <div className={classes.product_card_info}>
+          <div className={classes.product_card_title}>{name}</div>
+          <div className={classes.product_card_description}>{description}</div>
+          <div className={classes.product_card_price_container}>
+            {discont && (
+              <span className={classes.discont_price}>${discont}</span>
+            )}
+            <span
+              className={`${classes.regular_price} ${discont && classes.line_through}`}
+            >
+              ${price}
+            </span>
+          </div>
         </div>
       </div>
     </>
