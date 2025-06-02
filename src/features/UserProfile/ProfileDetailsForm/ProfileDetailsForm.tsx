@@ -97,7 +97,7 @@ const ProfileDetailsForm = () => {
       onFinish={handleSubmit(onSubmit)}
       disabled={disabled}
       variant="underlined"
-      style={{ width: 600 }}
+      style={{ width: '100%' }}
     >
       <FormField name="firstName" placeholder="First name" control={control} />
       <FormField name="lastName" placeholder="Last name" control={control} />

@@ -79,7 +79,7 @@ const ProfilePasswordForm = () => {
       onFinish={handleSubmit(onSubmit)}
       disabled={disabled}
       variant="underlined"
-      style={{ width: 600 }}
+      style={{ width: '100%' }}
     >
       <FormField
         name="password"
