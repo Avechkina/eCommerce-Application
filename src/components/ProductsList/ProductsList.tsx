@@ -12,20 +12,28 @@ export function ProductsList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(id);
         const response = await getProducts(id);
         const formattedData: TProductCardProps[] =
           response?.body.results.map((product) => ({
             id: product.id,
             name: product.name['en-US'] || 'No Name',
             image: product.masterVariant.images?.[0]?.url || '',
+            ...(product.description && {
+              description: product.description['en-US'],
+            }),
             price:
               (product.masterVariant.prices?.[0]?.value.centAmount ?? 0) /
               10 **
                 (product.masterVariant.prices?.[0].value.fractionDigits ?? 2),
+            ...(product.masterVariant.prices?.[0].discounted && {
+              discont:
+                product.masterVariant.prices?.[0].discounted.value.centAmount /
+                100,
+            }),
           })) ?? [];
 
         setProducts(formattedData);
-        console.log(id);
       } catch (error) {
         console.error(error);
       }
@@ -43,6 +51,7 @@ export function ProductsList() {
               image={product.image}
               price={product.price}
               discont={product.discont}
+              description={product.description}
             />
           ))
         : 'No products found'}
