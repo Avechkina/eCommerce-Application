@@ -51,26 +51,29 @@ const ProductView = () => {
 
   const getProductPrice = () => {
     const prices = product.masterVariant.prices;
-
     if (prices && prices.length > 0) {
       const price = prices[0];
       const value = price.value.centAmount;
       const currency = price.value.currencyCode;
-      const formattedPrice = `${value / 100} ${currency}`;
+
+      const formattedPrice = `${(value / 100).toFixed(2)} ${currency}`;
+
       if (price.discounted) {
         const discountedValue = price.discounted.value.centAmount;
         const discountedCurrency = price.discounted.value.currencyCode;
-        const discountedPrice = `${discountedValue / 100} ${discountedCurrency}`;
+
+        const discountedPrice = `${(discountedValue / 100).toFixed(2)} ${discountedCurrency}`;
+
         return {
           formattedPrice,
           discountedPrice,
         };
       }
+
       return {
         formattedPrice,
       };
     }
-
     return null;
   };
 
