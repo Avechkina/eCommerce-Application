@@ -1,10 +1,11 @@
-import { Carousel, Flex, Image, Space, Typography } from 'antd';
+import { Carousel, Flex, Image, Space, Spin, Typography } from 'antd';
 import getProduct from '@utils/getProduct';
 import { useEffect, useState } from 'react';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { useLocation } from 'react-router';
 import {
   LeftOutlined,
+  LoadingOutlined,
   RightOutlined,
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -44,7 +45,12 @@ const ProductView = () => {
   }, [productId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Spin
+        indicator={<LoadingOutlined style={{ fontSize: 84 }} spin />}
+        fullscreen
+      />
+    );
   }
 
   if (error) {

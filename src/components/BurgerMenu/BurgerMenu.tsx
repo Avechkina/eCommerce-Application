@@ -29,10 +29,10 @@ const BurgerMenu: React.FC = () => {
           </NavLink>
           <NavLink
             className={classes.link}
-            to="/product"
+            to="/catalog"
             onClick={handleLinkClick}
           >
-            Product
+            Catalog
           </NavLink>
           <NavLink
             className={classes.link}
