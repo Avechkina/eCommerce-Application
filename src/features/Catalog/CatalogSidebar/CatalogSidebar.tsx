@@ -1,3 +1,4 @@
+import useCategoryStore from '@store/categoryStore';
 import getCategories from '@utils/getCategories';
 import { Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
@@ -23,6 +24,7 @@ type TCategoryProps = {
 const CatalogSidebar = () => {
   const [items, setItems] = useState<CustomMenuItem[]>([]);
   const navigate = useNavigate();
+  const setCategory = useCategoryStore((state) => state.setCategory);
   const handleMenuItemClick = (
     e: { key: string },
     items: CustomMenuItem[]
@@ -42,7 +44,7 @@ const CatalogSidebar = () => {
     const targetSlug = subCategoryItem
       ? `${categoryItem?.slug}/${subCategoryItem.slug}`
       : categoryItem?.slug;
-    console.log(targetSlug);
+    setCategory(e.key, subCategoryItem ? 'subcategory' : 'category');
     navigate(`/catalog/${targetSlug}`);
   };
   useEffect(() => {
