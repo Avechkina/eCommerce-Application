@@ -15,7 +15,6 @@ import { tokenStore } from '@utils/tokenStore';
 const Navigation = () => {
   const navigate = useNavigate();
   const isAuth = useUserStore((state) => state.isAuth);
-  const updateId = useUserStore((state) => state.updateId);
   const resetCategory = useCategoryStore((state) => state.resetCategory);
   const resetUser = useUserStore((state) => state.resetUser);
   const handleSignoutButtonClick = () => {
@@ -34,7 +33,6 @@ const Navigation = () => {
       </h2>
       <div className={classes.link_wrapper}>
         <NavLink to="/">Home</NavLink>
-        <NavLink to="/shop">Shop</NavLink>
         <NavLink onClick={handleCatalogButtonClick} to="/catalog">
           Catalog
         </NavLink>
