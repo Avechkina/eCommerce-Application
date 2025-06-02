@@ -1,16 +1,18 @@
 import getProducts from '@utils/getProducts';
-import classes from './ProductsList.module.css';
 import { useEffect, useState } from 'react';
 import {
   ProductCard,
   TProductCardProps,
 } from '@components/ProductCard/ProductCard';
+import useCategoryStore from '@store/categoryStore';
 export function ProductsList() {
   const [products, setProducts] = useState<TProductCardProps[]>([]);
+  const id = useCategoryStore((state) => state.id);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getProducts();
+        const response = await getProducts(id);
         const formattedData: TProductCardProps[] =
           response?.body.results.map((product) => ({
             id: product.id,
@@ -21,26 +23,29 @@ export function ProductsList() {
               10 **
                 (product.masterVariant.prices?.[0].value.fractionDigits ?? 2),
           })) ?? [];
+
         setProducts(formattedData);
-        console.log(response.body.results);
+        console.log(id);
       } catch (error) {
         console.error(error);
       }
     };
+
     fetchData();
-  }, []);
+  }, [id]);
   return (
-    <div className={classes.products_list}>
-      {products.length &&
-        products.map((product) => (
-          <ProductCard
-            key={product.id}
-            name={product.name}
-            image={product.image}
-            price={product.price}
-            discont={product.discont}
-          />
-        ))}
-    </div>
+    <>
+      {products.length
+        ? products.map((product) => (
+            <ProductCard
+              key={product.id}
+              name={product.name}
+              image={product.image}
+              price={product.price}
+              discont={product.discont}
+            />
+          ))
+        : 'No products found'}
+    </>
   );
 }
