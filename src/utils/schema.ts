@@ -28,7 +28,7 @@ const citySchema = yup
     'Value must not contain leading or trailing whitespace',
     (value) => !value || value.trim() === value
   )
-  .matches(/^[A-Za-z]+$/, 'City name must contain only letters');
+  .matches(/^[A-Za-z]+$/, 'City name must contain only Latin letters');
 
 const postalCodeSchema = yup
   .string()
@@ -91,7 +91,7 @@ const firstNameShema = yup
     'Value must not contain leading or trailing whitespace',
     (value) => !value || value.trim() === value
   )
-  .matches(/^[A-Za-z]+$/, 'Name must contain only letters')
+  .matches(/^[A-Za-z]+$/, 'Name must contain only Latin letters')
   .matches(/^[A-Z]/, 'Name must be capitalized');
 
 const lastNameSchema = yup
@@ -102,7 +102,7 @@ const lastNameSchema = yup
     'Value must not contain leading or trailing whitespace',
     (value) => !value || value.trim() === value
   )
-  .matches(/^[A-Za-z]+$/, 'Last name must contain only letters')
+  .matches(/^[A-Za-z]+$/, 'Last name must contain only Latin letters')
   .matches(/^[A-Z]/, 'Last name must be capitalized');
 
 const dateOfBirthSchema = yup
@@ -133,7 +133,10 @@ const emailSchema = yup
     (value) => !value || value.trim() === value
   )
   .required('Please input your email')
-  .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email');
+  .matches(
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    'Invalid email, please use only Latin letters'
+  );
 
 const passwordShema = yup
   .string()
@@ -149,11 +152,11 @@ const passwordShema = yup
   )
   .matches(
     /^(?=.*[a-z]).+$/,
-    'Password must contain at least 1 lowercase letter'
+    'Password must contain at least 1 lowercase Latin  letter'
   )
   .matches(
     /^(?=.*[A-Z]).+$/,
-    'Password must contain at least 1 uppercase letter'
+    'Password must contain at least 1 uppercase Latin  letter'
   )
   .matches(/^(?=.*\d).+$/, 'Password must contain at least 1 number');
 
