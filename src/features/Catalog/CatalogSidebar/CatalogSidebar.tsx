@@ -72,10 +72,10 @@ const CatalogSidebar = () => {
           mainCategories.map((category) => {
             const filteredChildren = subCategories
               .filter(({ parent }) => parent === category.id)
-              .map((subCategorie) => ({
-                key: subCategorie.id,
-                label: subCategorie.name,
-                slug: subCategorie.slug,
+              .map((subCategory) => ({
+                key: subCategory.id,
+                label: subCategory.name,
+                slug: subCategory.slug,
               }));
 
             return {
