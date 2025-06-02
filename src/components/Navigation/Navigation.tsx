@@ -9,13 +9,18 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import BurgerMenu from '@components/BurgerMenu/BurgerMenu';
+import useCategoryStore from '@store/categoryStore';
 
 const Navigation = () => {
   const navigate = useNavigate();
   const isAuth = useUserStore((state) => state.isAuth);
   const updateId = useUserStore((state) => state.updateId);
+  const resetCategory = useCategoryStore((state) => state.resetCategory);
   const handleSignoutButtonClick = () => {
     updateId('', false);
+  };
+  const handleCatalogButtonClick = () => {
+    resetCategory();
   };
 
   return (
@@ -27,7 +32,9 @@ const Navigation = () => {
       <div className={classes.link_wrapper}>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/shop">Shop</NavLink>
-        <NavLink to="/catalog">Catalog</NavLink>
+        <NavLink onClick={handleCatalogButtonClick} to="/catalog">
+          Catalog
+        </NavLink>
         <NavLink to="/about">About us</NavLink>
       </div>
       <div className={classes.icon_wrapper}>
