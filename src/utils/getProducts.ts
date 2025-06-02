@@ -6,6 +6,7 @@ const getProducts = (categoryId: string) => {
     .get({
       queryArgs: {
         limit: 9,
+        expand: ['productType'],
         ...(categoryId && { where: `categories(id="${categoryId}")` }),
       },
     })
