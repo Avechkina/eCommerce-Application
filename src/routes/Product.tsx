@@ -1,9 +1,7 @@
+import ProductView from '@features/ProductView/ProductView';
+
 const Product = () => {
-  return (
-    <>
-      <h1>Product page</h1>
-    </>
-  );
+  return <ProductView />;
 };
 
 export default Product;

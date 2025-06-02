@@ -20,21 +20,15 @@ export function ProductsList() {
             id: product.id,
             name: product.name['en-US'] || 'No Name',
             image: product.masterVariant.images?.[0]?.url || '',
-            ...(product.description && {
-              description: product.description['en-US'],
-            }),
             price:
               (product.masterVariant.prices?.[0]?.value.centAmount ?? 0) /
               10 **
                 (product.masterVariant.prices?.[0].value.fractionDigits ?? 2),
-            ...(product.masterVariant.prices?.[0].discounted && {
-              discont:
-                product.masterVariant.prices?.[0].discounted.value.centAmount /
-                100,
-            }),
+            slug: product.slug,
           })) ?? [];
 
         setProducts(formattedData);
+        console.log(id);
       } catch (error) {
         console.error(error);
       }
@@ -47,12 +41,13 @@ export function ProductsList() {
       {products.length
         ? products.map((product) => (
             <ProductCard
+              id={product.id}
               key={product.id}
               name={product.name}
               image={product.image}
               price={product.price}
               discont={product.discont}
-              description={product.description}
+              slug={product.slug}
             />
           ))
         : 'No products found'}
