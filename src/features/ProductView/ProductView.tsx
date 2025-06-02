@@ -1,8 +1,14 @@
-import { Carousel, Image, Typography } from 'antd';
+import { Carousel, Image, Space, Typography } from 'antd';
 import getProduct from '@utils/getProduct';
 import { useEffect, useState } from 'react';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { useLocation } from 'react-router';
+import {
+  LeftOutlined,
+  RightOutlined,
+  ZoomInOutlined,
+  ZoomOutOutlined,
+} from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
@@ -82,16 +88,40 @@ const ProductView = () => {
   return (
     <div style={{ width: '100%' }}>
       <div style={{ maxWidth: 400, width: '100%', margin: 'auto' }}>
-        <Carousel autoplay arrows fade>
-          {product.masterVariant.images.map((img, index) => (
-            <Image
-              key={index}
-              src={img.url}
-              width="100%"
-              alt={`Product image ${index + 1}`}
-            />
-          ))}
-        </Carousel>
+        <Image.PreviewGroup
+          preview={{
+            toolbarRender: (
+              _,
+              { actions: { onActive, onZoomOut, onZoomIn } }
+            ) => (
+              <Space size={12} className="toolbar-wrapper">
+                <div onClick={() => onActive?.(-1)}>
+                  <LeftOutlined style={{ fontSize: '16px' }} />
+                </div>
+                <div onClick={() => onActive?.(1)}>
+                  <RightOutlined style={{ fontSize: '16px' }} />
+                </div>
+                <div onClick={onZoomOut}>
+                  <ZoomOutOutlined style={{ fontSize: '16px' }} />
+                </div>
+                <div onClick={onZoomIn}>
+                  <ZoomInOutlined style={{ fontSize: '16px' }} />
+                </div>
+              </Space>
+            ),
+          }}
+        >
+          <Carousel autoplay arrows fade>
+            {product.masterVariant.images.map((img, index) => (
+              <Image
+                key={index}
+                src={img.url}
+                width="100%"
+                alt={`Product image ${index + 1}`}
+              />
+            ))}
+          </Carousel>
+        </Image.PreviewGroup>
       </div>
       <div>
         <Title level={2}>{product.name['en-US'] || 'No Name'}</Title>
