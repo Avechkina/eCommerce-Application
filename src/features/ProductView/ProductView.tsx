@@ -1,4 +1,4 @@
-import { Carousel, Image, Space, Typography } from 'antd';
+import { Carousel, Flex, Image, Space, Typography } from 'antd';
 import getProduct from '@utils/getProduct';
 import { useEffect, useState } from 'react';
 import { ProductProjection } from '@commercetools/platform-sdk';
@@ -86,8 +86,14 @@ const ProductView = () => {
   const price = getProductPrice();
 
   return (
-    <div style={{ width: '100%' }}>
-      <div style={{ maxWidth: 400, width: '100%', margin: 'auto' }}>
+    <Flex
+      style={{ width: '100%' }}
+      gap="middle"
+      wrap
+      justify="center"
+      align="center"
+    >
+      <div style={{ maxWidth: 400, width: '100%' }}>
         <Image.PreviewGroup
           preview={{
             toolbarRender: (
@@ -133,7 +139,7 @@ const ProductView = () => {
         <Title level={4}>{price?.discountedPrice}</Title>
         <Text delete>{price?.formattedPrice}</Text>
       </div>
-    </div>
+    </Flex>
   );
 };
 
