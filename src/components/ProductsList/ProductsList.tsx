@@ -12,7 +12,6 @@ export function ProductsList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(id);
         const response = await getProducts(id);
         const formattedData: TProductCardProps[] =
           response?.body.results.map((product) => ({
