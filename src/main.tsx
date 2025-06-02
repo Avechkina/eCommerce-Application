@@ -18,8 +18,6 @@ import CategoryView from '@features/Catalog/CategoryView/CategoryView.tsx';
 import SubcategoryView from '@features/Catalog/SubcategoryView/SubcategoryView.tsx';
 import Profile from './routes/Profile.tsx';
 import PrivateRoute from '@features/Routing/PrivateRoute.tsx';
-import ProfileHome from '@features/UserProfile/ProfileHome/ProfileHome.tsx';
-import ProfileAddresses from '@features/UserProfile/ProfileAddresses/ProfileAddresses.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -35,8 +33,13 @@ createRoot(document.getElementById('root')!).render(
               path=":categoryName/:subcategoryName"
               element={<SubcategoryView />}
             />
+            <Route path="product/:productName" element={<Product />} />
             <Route
-              path=":categoryName/:subcategoryName/:productName"
+              path=":categoryName/product/:productName"
+              element={<Product />}
+            />
+            <Route
+              path=":categoryName/:subcategoryName/product/:productName"
               element={<Product />}
             />
           </Route>
@@ -46,10 +49,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="signin" element={<SignIn />} />
           </Route>
           <Route element={<PrivateRoute />}>
-            <Route path="profile" element={<Profile />}>
-              <Route index element={<ProfileHome />} />
-              <Route path="address" element={<ProfileAddresses />} />
-            </Route>
+            <Route path="profile" element={<Profile />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
