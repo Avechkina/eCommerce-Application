@@ -1,6 +1,6 @@
 import getCategories from '@utils/getCategories';
 import { Breadcrumb } from 'antd';
-import { useEffect, useState } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
 type TCategoryProps = {
@@ -9,6 +9,13 @@ type TCategoryProps = {
   name: string;
   slug?: string;
   parent?: string;
+};
+
+type TBreadcrumbItem = {
+  key: string;
+  title: string;
+  onClick?: MouseEventHandler;
+  className?: string;
 };
 
 type TBreadcrumbMap = Record<string, string>;
@@ -54,7 +61,6 @@ export const Breadcrumbs = () => {
             breadcrumbMap[getFullPath(category)] = category.name;
           }
         });
-        console.log(breadcrumbMap);
 
         setBreadcrumbMap(breadcrumbMap);
       } catch (error) {
@@ -64,18 +70,18 @@ export const Breadcrumbs = () => {
 
     fetchData();
   }, []);
+
   const location = useLocation();
 
   const getBreadcrumbs = () => {
     const pathnames = location.pathname.split('/').filter((elem) => elem);
-    const breadcrumbs: Record<string, string>[] = [];
+    const breadcrumbs: TBreadcrumbItem[] = [];
 
-    pathnames.forEach((elem, index) => {
+    pathnames.forEach((_, index) => {
       const route: string = `/${pathnames.slice(0, index + 1).join('/')}`;
       breadcrumbs.push({
         key: route,
-        title: breadcrumbMap[route] ? breadcrumbMap[route] : elem,
-        href: route,
+        title: breadcrumbMap[route],
       });
     });
     return breadcrumbs;
