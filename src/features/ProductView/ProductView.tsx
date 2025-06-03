@@ -142,8 +142,14 @@ const ProductView = () => {
             ? product.description['en-US']
             : 'No description'}
         </Text>
-        <Title level={4}>{price?.discountedPrice}</Title>
-        <Text delete>{price?.formattedPrice}</Text>
+        <Title level={4}>
+          {price?.discountedPrice
+            ? price.discountedPrice
+            : price?.formattedPrice}
+        </Title>
+        <Text delete>
+          {price?.discountedPrice ? price?.formattedPrice : undefined}
+        </Text>
       </div>
     </Flex>
   );
