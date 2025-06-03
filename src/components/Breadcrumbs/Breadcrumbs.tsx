@@ -1,24 +1,69 @@
-// import { buildBreadcrumbMap } from '@utils/buildBreadcrumpMap';
+import getCategories from '@utils/getCategories';
 import { Breadcrumb } from 'antd';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
-const breadcrumbMap: Record<string, string> = {
-  '/catalog': 'Catalog',
-  '/catalog/wearables': 'Wearables',
-  '/catalog/wearables/smart-ar-gear': 'Smart AR Gear',
-  '/catalog/wearables/biometric-accessories': 'Biometric Accessorie',
-  '/catalog/transport': 'Transport',
-  '/catalog/intelligence': 'Intelligence',
-  '/catalog/intelligence/ai-assistants': 'AI Assistants',
-  '/catalog/intelligence/predictive-tech': 'Predictive Tech',
-  '/catalog/health': 'Nano-Medicine',
-  '/catalog/immersive-tech': 'Immersive Tech',
-  '/catalog/immersive-tech/holography': 'Holography',
-  '/catalog/immersive-tech/gaming': 'Gaming',
-  '/catalog/energy': 'Energy',
+type TCategoryProps = {
+  id: string;
+  key?: string;
+  name: string;
+  slug?: string;
+  parent?: string;
 };
 
+type TBreadcrumbMap = Record<string, string>;
+
 export const Breadcrumbs = () => {
+  const [breadcrumbMap, setBreadcrumbMap] = useState<TBreadcrumbMap>({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getCategories();
+        const categories: TCategoryProps[] = response?.body.results.map(
+          (category) => ({
+            id: category.id,
+            key: category.key,
+            name: category.name['en-US'],
+            slug: category.slug?.['en-US'],
+            ...(category.parent && { parent: category.parent.id }),
+          })
+        );
+
+        const categoryMap = new Map<string, TCategoryProps>();
+        categories.forEach((category) => {
+          categoryMap.set(category.id, category);
+        });
+
+        const getFullPath = (category: TCategoryProps): string => {
+          let path = `/catalog/${category.slug}`;
+          let current = category;
+
+          while (current.parent) {
+            const parentCategory = categoryMap.get(current.parent);
+            if (!parentCategory) break;
+            path = `/catalog/${parentCategory.slug}${path.replace('/catalog', '')}`;
+            current = parentCategory;
+          }
+          return path;
+        };
+
+        const breadcrumbMap: TBreadcrumbMap = { '/catalog': 'Catalog' };
+        categories.forEach((category) => {
+          if (category.slug) {
+            breadcrumbMap[getFullPath(category)] = category.name;
+          }
+        });
+        console.log(breadcrumbMap);
+
+        setBreadcrumbMap(breadcrumbMap);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
   const location = useLocation();
 
   const getBreadcrumbs = () => {
@@ -30,9 +75,9 @@ export const Breadcrumbs = () => {
       breadcrumbs.push({
         key: route,
         title: breadcrumbMap[route] ? breadcrumbMap[route] : elem,
+        href: route,
       });
     });
-    console.log(breadcrumbs);
     return breadcrumbs;
   };
 
