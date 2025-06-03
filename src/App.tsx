@@ -5,9 +5,7 @@ import { useEffect } from 'react';
 function App() {
   const userState = useUserStore((state) => state);
 
-  useEffect(() => {
-    // console.log(userState);
-  }, [userState]);
+  useEffect(() => {}, [userState]);
   return (
     <>
       <div
