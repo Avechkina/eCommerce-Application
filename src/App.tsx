@@ -10,7 +10,7 @@ function App() {
   }, [userState]);
   return (
     <>
-      <h1>ecommerce app</h1>
+      <h1>10% OFF all high-end products ($1,000+)</h1>
     </>
   );
 }

@@ -39,3 +39,12 @@ export type FormValues = {
   billingPostalCode: string;
   billingStreetName: string;
 };
+
+export type AccountDetails = Pick<
+  FormValues,
+  'firstName' | 'lastName' | 'dateOfBirth' | 'email'
+>;
+
+export type Password = Pick<FormValues, 'password'> & {
+  newPassword: string;
+};

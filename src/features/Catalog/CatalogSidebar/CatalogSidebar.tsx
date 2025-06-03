@@ -1,4 +1,6 @@
+import { useScreenSize } from '@features/hooks/useScreenSize';
 import useCategoryStore from '@store/categoryStore';
+import useSearchStore from '@store/searchStore';
 import getCategories from '@utils/getCategories';
 import { Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
@@ -10,8 +12,6 @@ type CustomMenuItem = MenuItem & {
   slug?: string;
   children?: CustomMenuItem[];
 };
-
-//Fetch categories using Commercetools SDK
 
 type TCategoryProps = {
   id: string;
@@ -25,6 +25,9 @@ const CatalogSidebar = () => {
   const [items, setItems] = useState<CustomMenuItem[]>([]);
   const navigate = useNavigate();
   const setCategory = useCategoryStore((state) => state.setCategory);
+  const setSearchValue = useSearchStore((state) => state.setValue);
+  const { isMobile } = useScreenSize();
+
   const handleMenuItemClick = (
     e: { key: string },
     items: CustomMenuItem[]
@@ -45,6 +48,7 @@ const CatalogSidebar = () => {
       ? `${categoryItem?.slug}/${subCategoryItem.slug}`
       : categoryItem?.slug;
     setCategory(e.key, subCategoryItem ? 'subcategory' : 'category');
+    setSearchValue('');
     navigate(`/catalog/${targetSlug}`);
   };
   useEffect(() => {
@@ -72,10 +76,10 @@ const CatalogSidebar = () => {
           mainCategories.map((category) => {
             const filteredChildren = subCategories
               .filter(({ parent }) => parent === category.id)
-              .map((subCategorie) => ({
-                key: subCategorie.id,
-                label: subCategorie.name,
-                slug: subCategorie.slug,
+              .map((subCategory) => ({
+                key: subCategory.id,
+                label: subCategory.name,
+                slug: subCategory.slug,
               }));
 
             return {
@@ -95,7 +99,14 @@ const CatalogSidebar = () => {
 
     fetchData();
   }, []);
-  return (
+  return isMobile ? (
+    <Menu
+      onClick={(e) => handleMenuItemClick(e, items)}
+      items={items}
+      mode="horizontal"
+      style={{ textAlign: 'left' }}
+    />
+  ) : (
     <Sider theme="light">
       <Menu
         onClick={(e) => handleMenuItemClick(e, items)}

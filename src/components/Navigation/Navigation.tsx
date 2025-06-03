@@ -10,17 +10,22 @@ import {
 } from '@ant-design/icons';
 import BurgerMenu from '@components/BurgerMenu/BurgerMenu';
 import useCategoryStore from '@store/categoryStore';
+import { tokenStore } from '@utils/tokenStore';
+import useSearchStore from '@store/searchStore';
 
 const Navigation = () => {
   const navigate = useNavigate();
   const isAuth = useUserStore((state) => state.isAuth);
-  const updateId = useUserStore((state) => state.updateId);
   const resetCategory = useCategoryStore((state) => state.resetCategory);
+  const setSearchValue = useSearchStore((state) => state.setValue);
+  const resetUser = useUserStore((state) => state.resetUser);
   const handleSignoutButtonClick = () => {
-    updateId('', false);
+    resetUser();
+    tokenStore.resetToken();
   };
   const handleCatalogButtonClick = () => {
     resetCategory();
+    setSearchValue('');
   };
 
   return (
@@ -31,7 +36,6 @@ const Navigation = () => {
       </h2>
       <div className={classes.link_wrapper}>
         <NavLink to="/">Home</NavLink>
-        <NavLink to="/shop">Shop</NavLink>
         <NavLink onClick={handleCatalogButtonClick} to="/catalog">
           Catalog
         </NavLink>
