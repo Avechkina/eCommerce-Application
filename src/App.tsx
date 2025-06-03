@@ -6,11 +6,17 @@ function App() {
   const userState = useUserStore((state) => state);
 
   useEffect(() => {
-    console.log(userState);
+    // console.log(userState);
   }, [userState]);
   return (
     <>
-      <h1>10% OFF all high-end products ($1,000+)</h1>
+      <div
+        style={{
+          flex: 1,
+        }}
+      >
+        <h1>10% OFF all high-end products ($1,000+)</h1>
+      </div>
     </>
   );
 }
