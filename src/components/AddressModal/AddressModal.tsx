@@ -26,11 +26,21 @@ const AddressModal = () => {
     control,
     handleSubmit,
     reset,
+    trigger,
+    watch,
     formState: { isValid },
   } = useForm<Address>({
     resolver: yupResolver(addressSchema),
     mode: 'onChange',
   });
+
+  const countryValue = watch('country');
+
+  useEffect(() => {
+    if (countryValue) {
+      trigger('postalCode');
+    }
+  }, [countryValue, trigger]);
 
   useEffect(() => {
     reset({
