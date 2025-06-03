@@ -1,3 +1,4 @@
+import { useScreenSize } from '@features/hooks/useScreenSize';
 import { Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { useLocation, useNavigate } from 'react-router';
@@ -18,13 +19,22 @@ const items: MenuItem[] = [
 const ProfileSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isMobile } = useScreenSize();
 
-  return (
+  return isMobile ? (
+    <Menu
+      items={items}
+      selectedKeys={[location.pathname]}
+      onSelect={(e) => navigate(e.key)}
+      mode={'horizontal'}
+    />
+  ) : (
     <Sider theme="light">
       <Menu
         items={items}
         selectedKeys={[location.pathname]}
         onSelect={(e) => navigate(e.key)}
+        mode={'vertical'}
       />
     </Sider>
   );
