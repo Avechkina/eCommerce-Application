@@ -32,8 +32,10 @@ const SearchProducts = () => {
   return (
     <>
       <Search
-        placeholder="input search text"
+        style={{ maxWidth: '95%' }}
+        placeholder="Search ..."
         value={inputValue}
+        variant="underlined"
         allowClear
         enterButton="Search"
         size="large"

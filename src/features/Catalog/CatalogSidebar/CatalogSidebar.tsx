@@ -1,3 +1,4 @@
+import { useScreenSize } from '@features/hooks/useScreenSize';
 import useCategoryStore from '@store/categoryStore';
 import useSearchStore from '@store/searchStore';
 import getCategories from '@utils/getCategories';
@@ -12,8 +13,6 @@ type CustomMenuItem = MenuItem & {
   children?: CustomMenuItem[];
 };
 
-//Fetch categories using Commercetools SDK
-
 type TCategoryProps = {
   id: string;
   key?: string;
@@ -27,6 +26,8 @@ const CatalogSidebar = () => {
   const navigate = useNavigate();
   const setCategory = useCategoryStore((state) => state.setCategory);
   const setSearchValue = useSearchStore((state) => state.setValue);
+  const { isMobile } = useScreenSize();
+
   const handleMenuItemClick = (
     e: { key: string },
     items: CustomMenuItem[]
@@ -98,7 +99,14 @@ const CatalogSidebar = () => {
 
     fetchData();
   }, []);
-  return (
+  return isMobile ? (
+    <Menu
+      onClick={(e) => handleMenuItemClick(e, items)}
+      items={items}
+      mode="horizontal"
+      style={{ textAlign: 'left' }}
+    />
+  ) : (
     <Sider theme="light">
       <Menu
         onClick={(e) => handleMenuItemClick(e, items)}

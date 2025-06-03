@@ -5,13 +5,19 @@ import { Outlet } from 'react-router';
 import Flexbox from '@components/Flexbox/Flexbox';
 import classes from './CatalogLayout.module.css';
 import SearchProducts from '@components/SearchProducts/SearchProducts';
+import { useScreenSize } from '@features/hooks/useScreenSize';
 
 const CatalogLayout = () => {
+  const { isMobile } = useScreenSize();
+
   return (
     <Layout>
       <CatalogSidebar />
-      <Content>          
-        <div className={classes.top_bar_container}>
+      <Content>
+        <div
+          className={classes.top_bar_container}
+          style={isMobile ? { margin: '16px 0' } : { marginBottom: 16 }}
+        >
           <SearchProducts />
         </div>
         <Flexbox>
