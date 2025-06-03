@@ -7,6 +7,7 @@ import Flexbox from '@components/Flexbox/Flexbox';
 import classes from './CatalogLayout.module.css';
 import SearchProducts from '@components/SearchProducts/SearchProducts';
 import { useScreenSize } from '@features/hooks/useScreenSize';
+import { SortProducts } from '@components/SortProducts/SortProducts';
 
 const CatalogLayout = () => {
   const { isMobile } = useScreenSize();
@@ -22,6 +23,7 @@ const CatalogLayout = () => {
             style={isMobile ? { margin: '16px 0' } : { marginBottom: 16 }}
           >
             <SearchProducts />
+            <SortProducts />
           </div>
           <Flexbox>
             <Outlet />
