@@ -106,7 +106,6 @@ const AddressModal = () => {
         duration: 1,
       });
       updateUser(response.body);
-      console.log(response.body);
     } catch (error) {
       message.error({
         content: `Address update failed, please try again`,
@@ -154,7 +153,6 @@ const AddressModal = () => {
             addr.postalCode === values.postalCode &&
             addr.streetName === values.streetName
         );
-        console.log(newAddress);
 
         if (newAddress) {
           const defaultActions: MyCustomerUpdateAction[] = [];
