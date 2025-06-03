@@ -26,7 +26,7 @@ const ProfileSidebar = () => {
       items={items}
       selectedKeys={[location.pathname]}
       onSelect={(e) => navigate(e.key)}
-      mode={'horizontal'}
+      mode="horizontal"
     />
   ) : (
     <Sider theme="light">
@@ -34,7 +34,7 @@ const ProfileSidebar = () => {
         items={items}
         selectedKeys={[location.pathname]}
         onSelect={(e) => navigate(e.key)}
-        mode={'vertical'}
+        mode="vertical"
       />
     </Sider>
   );

@@ -15,6 +15,7 @@
   color: #141718;
   text-align: left;
   min-width: 200px;
+  max-width: 400px;
   width: calc(33% - 16px);
   cursor: pointer;
   transition: 0.3s;
