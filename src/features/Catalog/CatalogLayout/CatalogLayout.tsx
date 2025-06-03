@@ -1,3 +1,4 @@
+import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import CatalogSidebar from '@features/Catalog/CatalogSidebar/CatalogSidebar';
 import { Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
@@ -11,20 +12,23 @@ const CatalogLayout = () => {
   const { isMobile } = useScreenSize();
 
   return (
-    <Layout>
-      <CatalogSidebar />
-      <Content>
-        <div
-          className={classes.top_bar_container}
-          style={isMobile ? { margin: '16px 0' } : { marginBottom: 16 }}
-        >
-          <SearchProducts />
-        </div>
-        <Flexbox>
-          <Outlet />
-        </Flexbox>
-      </Content>
-    </Layout>
+    <>
+      <Breadcrumbs />
+      <Layout>
+        <CatalogSidebar />
+        <Content>
+          <div
+            className={classes.top_bar_container}
+            style={isMobile ? { margin: '16px 0' } : { marginBottom: 16 }}
+          >
+            <SearchProducts />
+          </div>
+          <Flexbox>
+            <Outlet />
+          </Flexbox>
+        </Content>
+      </Layout>
+    </>
   );
 };
 

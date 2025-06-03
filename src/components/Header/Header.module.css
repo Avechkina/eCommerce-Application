@@ -1,4 +1,6 @@
-header {
-  max-width: 1240px;
+.header {
+  max-width: 1260px;
   padding: 1rem;
+  margin: auto;
+  width: 100%;
 }
