@@ -2,6 +2,7 @@ import getCategories from '@utils/getCategories';
 import { Breadcrumb } from 'antd';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import classes from './Breadcrumbs.module.css';
 
 type TCategoryProps = {
   id: string;
@@ -87,5 +88,7 @@ export const Breadcrumbs = () => {
     return breadcrumbs;
   };
 
-  return <Breadcrumb items={getBreadcrumbs()} />;
+  return (
+    <Breadcrumb className={classes.breadcrumbs} items={getBreadcrumbs()} />
+  );
 };
