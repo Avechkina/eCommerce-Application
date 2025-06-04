@@ -71,7 +71,6 @@ const ProfileDetailsForm = () => {
         duration: 1,
       });
       updateUser(response.body);
-      console.log(response.body);
     } catch (error) {
       message.error({
         content: `Account details update failed, please try again`,

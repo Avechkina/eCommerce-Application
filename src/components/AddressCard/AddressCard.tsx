@@ -68,7 +68,6 @@ const AddressCard = memo(
           duration: 1,
         });
         updateUser(response.body);
-        console.log(response.body);
       } catch (error) {
         message.error({
           content: `Failed to remove address, please try again`,

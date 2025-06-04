@@ -49,7 +49,6 @@ const LoginForm = () => {
         duration: 1,
         onClose: () => updateUser(response.body.customer),
       });
-      console.log(response);
     } catch (error) {
       if (error instanceof Error) {
         setError({ message: error.message, visible: true });

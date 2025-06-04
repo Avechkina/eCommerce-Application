@@ -38,7 +38,6 @@ export function ProductsList() {
           })) ?? [];
 
         setProducts(formattedData);
-        console.log(id);
       } catch (error) {
         console.error(error);
       }

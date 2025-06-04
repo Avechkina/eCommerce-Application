@@ -125,7 +125,6 @@ const RegistrationForm = () => {
           duration: 1,
           onClose: () => updateUser(response.body.customer),
         });
-        console.log(response);
       }
     } catch (error) {
       if (error instanceof Error) {
