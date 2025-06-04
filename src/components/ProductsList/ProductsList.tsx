@@ -6,15 +6,17 @@ import {
 } from '@components/ProductCard/ProductCard';
 import useCategoryStore from '@store/categoryStore';
 import useSearchStore from '@store/searchStore';
+import useSortingStore from '@store/sortingStore';
 export function ProductsList() {
   const [products, setProducts] = useState<TProductCardProps[]>([]);
   const id = useCategoryStore((state) => state.id);
   const searchValue = useSearchStore((state) => state.searchValue);
+  const sortValue = useSortingStore((state) => state.sortValue);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getProducts(id, searchValue);
+        const response = await getProducts(id, searchValue, sortValue);
         const formattedData: TProductCardProps[] =
           response?.body.results.map((product) => ({
             id: product.id,
@@ -43,7 +45,7 @@ export function ProductsList() {
     };
 
     fetchData();
-  }, [id, searchValue]);
+  }, [id, searchValue, sortValue]);
   return (
     <>
       {products.length

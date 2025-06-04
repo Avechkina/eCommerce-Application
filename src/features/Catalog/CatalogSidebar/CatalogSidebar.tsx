@@ -1,6 +1,7 @@
 import { useScreenSize } from '@features/hooks/useScreenSize';
 import useCategoryStore from '@store/categoryStore';
 import useSearchStore from '@store/searchStore';
+import useSortingStore from '@store/sortingStore';
 import getCategories from '@utils/getCategories';
 import { Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
@@ -26,6 +27,7 @@ const CatalogSidebar = () => {
   const navigate = useNavigate();
   const setCategory = useCategoryStore((state) => state.setCategory);
   const setSearchValue = useSearchStore((state) => state.setValue);
+  const resetSortingValue = useSortingStore((state) => state.resetSortingValue);
   const { isMobile } = useScreenSize();
 
   const handleMenuItemClick = (
@@ -49,6 +51,7 @@ const CatalogSidebar = () => {
       : categoryItem?.slug;
     setCategory(e.key, subCategoryItem ? 'subcategory' : 'category');
     setSearchValue('');
+    resetSortingValue();
     navigate(`/catalog/${targetSlug}`);
   };
   useEffect(() => {

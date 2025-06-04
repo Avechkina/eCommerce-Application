@@ -1,6 +1,10 @@
 import { apiRoot } from '@services/BuildClient';
 
-const getProducts = (categoryId?: string, searchText?: string) => {
+const getProducts = (
+  categoryId?: string,
+  searchText?: string,
+  sortValue?: string
+) => {
   if (searchText) {
     return apiRoot
       .productProjections()
@@ -10,6 +14,21 @@ const getProducts = (categoryId?: string, searchText?: string) => {
           'text.en-US': searchText,
           fuzzy: true,
           fuzzyLevel: 1,
+          limit: 9,
+          ...(categoryId && { filter: [`categories.id:"${categoryId}"`] }),
+        },
+      })
+      .execute();
+  }
+
+  if (sortValue) {
+    return apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          sort: `${sortValue}`,
+          limit: 9,
           ...(categoryId && { filter: [`categories.id:"${categoryId}"`] }),
         },
       })
