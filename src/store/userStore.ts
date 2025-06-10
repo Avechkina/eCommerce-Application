@@ -1,17 +1,20 @@
+import { Customer } from '@commercetools/platform-sdk';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface UserState {
-  id: string;
+  user: Customer | undefined;
   isAuth: boolean;
-  updateId: (newId: string, isAuth: boolean) => void;
+  updateUser: (user: Customer) => void;
+  resetUser: () => void;
 }
 const useUserStore = create<UserState>()(
   persist(
     (set) => ({
-      id: '',
+      user: undefined,
       isAuth: false,
-      updateId: (newId: string, isAuth: boolean) => set({ id: newId, isAuth }),
+      updateUser: (user) => set({ user, isAuth: true }),
+      resetUser: () => set({ user: undefined, isAuth: false }),
     }),
     { name: 'user-storage' }
   )

@@ -1,25 +1,29 @@
 import FormField from '@components/FormField/FormField';
-import { COUNTRIES } from '@utils/countries';
+import { COUNTRIES } from '@utils/constants';
 import { AutoComplete, Checkbox, Typography } from 'antd';
 import { useMemo } from 'react';
-import { Control } from 'react-hook-form';
-import { FormValues } from 'types/registration';
+import { Control, Path } from 'react-hook-form';
 
-type Props = {
-  title: string;
-  control: Control<FormValues>;
-  isShipping?: boolean;
-  onChange: () => void;
+type Props<T extends object> = {
+  title?: string;
+  control: Control<T>;
+  onChange?: () => void;
+  fieldNames: {
+    country: Path<T>;
+    city: Path<T>;
+    postalCode: Path<T>;
+    streetName: Path<T>;
+  };
 };
 
 const { Title } = Typography;
 
-const AddressFieldGroup = ({
+const AddressFieldGroup = <T extends object>({
   title,
   control,
-  isShipping = true,
   onChange,
-}: Props) => {
+  fieldNames: { country, city, postalCode, streetName },
+}: Props<T>) => {
   const countryOptions = useMemo(
     () => COUNTRIES.map((country) => ({ value: country.value })),
     []
@@ -27,9 +31,9 @@ const AddressFieldGroup = ({
 
   return (
     <>
-      <Title level={5}>{title}</Title>
+      {title && <Title level={5}>{title}</Title>}
       <FormField
-        name={isShipping ? 'country' : 'billingCountry'}
+        name={country}
         control={control}
         renderItem={(field) => (
           <AutoComplete
@@ -41,22 +45,16 @@ const AddressFieldGroup = ({
           />
         )}
       />
+      <FormField name={city} placeholder="City" control={control} />
       <FormField
-        name={isShipping ? 'city' : 'billingCity'}
-        placeholder="City"
-        control={control}
-      />
-      <FormField
-        name={isShipping ? 'postalCode' : 'billingPostalCode'}
+        name={postalCode}
         placeholder="Postal code"
         control={control}
       />
-      <FormField
-        name={isShipping ? 'streetName' : 'billingStreetName'}
-        placeholder="Street"
-        control={control}
-      />
-      <Checkbox onChange={onChange}>Set as default {title}</Checkbox>
+      <FormField name={streetName} placeholder="Street" control={control} />
+      {onChange && (
+        <Checkbox onChange={onChange}>Set as default {title}</Checkbox>
+      )}
     </>
   );
 };

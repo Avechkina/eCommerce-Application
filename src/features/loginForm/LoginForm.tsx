@@ -1,4 +1,4 @@
-import { Alert, Button, Form, Input } from 'antd';
+import { Alert, Button, Form, Input, message } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import useUserStore from '@store/userStore';
@@ -9,6 +9,7 @@ import { loginSchema } from '@utils/schema';
 import { LoginFormValues } from 'types/authentication';
 import loginCustomer from '@utils/loginCustomer';
 import classes from './LoginForm.module.css';
+import { getApiRoot, getAuthClient } from '@services/BuildClient';
 
 const LoginForm = () => {
   const [error, setError] = useState({
@@ -16,7 +17,7 @@ const LoginForm = () => {
     visible: false,
   });
 
-  const updateId = useUserStore((state) => state.updateId);
+  const updateUser = useUserStore((state) => state.updateUser);
 
   const {
     control,
@@ -40,9 +41,14 @@ const LoginForm = () => {
         email,
         password,
       };
-      const response = await loginCustomer(customer);
-      console.log(response);
-      updateId(response.body.customer.id, true);
+      const authClient = getAuthClient(email, password);
+      const authApiRoot = getApiRoot(authClient);
+      const response = await loginCustomer(authApiRoot, customer);
+      message.success({
+        content: `Login successful! Welcome back, ${response.body.customer.firstName}.`,
+        duration: 1,
+        onClose: () => updateUser(response.body.customer),
+      });
     } catch (error) {
       if (error instanceof Error) {
         setError({ message: error.message, visible: true });

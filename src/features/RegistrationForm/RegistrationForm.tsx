@@ -1,5 +1,13 @@
 import { Address, CustomerDraft, FormValues } from 'types/registration';
-import { Alert, Button, Checkbox, DatePicker, Form, Input } from 'antd';
+import {
+  Alert,
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  message,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import createCustomer from '@utils/createCustomer';
 import { Link } from 'react-router';
@@ -9,9 +17,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormField from '@components/FormField/FormField';
 import { schema } from '@utils/schema';
 import dayjs from 'dayjs';
-import { COUNTRIES } from '@utils/countries';
 import classes from './RegestrationForm.module.css';
 import AddressFieldGroup from '@components/AddressFieldGroup/AddressFieldGroup';
+import { COUNTRIES, DATE_FORMAT } from '@utils/constants';
 
 const RegistrationForm = () => {
   const [error, setError] = useState({
@@ -23,7 +31,7 @@ const RegistrationForm = () => {
     shipping: false,
     billing: false,
   });
-  const updateId = useUserStore((state) => state.updateId);
+  const updateUser = useUserStore((state) => state.updateUser);
   const {
     control,
     handleSubmit,
@@ -51,8 +59,6 @@ const RegistrationForm = () => {
       });
     }
   }, [isChecked, shippingAddress, setValue]);
-
-  const dateFormat = 'YYYY-MM-DD';
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
     try {
@@ -114,8 +120,11 @@ const RegistrationForm = () => {
           defaultBillingAddress: defaultBillingAddress,
         };
         const response = await createCustomer(customer);
-        updateId(response.body.customer.id, true);
-        console.log(response);
+        message.success({
+          content: `Registration successful! Welcome aboard, ${response.body.customer.firstName}.`,
+          duration: 1,
+          onClose: () => updateUser(response.body.customer),
+        });
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -164,7 +173,7 @@ const RegistrationForm = () => {
               {...field}
               value={field.value ? dayjs(field.value) : undefined}
               onChange={(date) =>
-                field.onChange(date ? date.format(dateFormat) : undefined)
+                field.onChange(date ? date.format(DATE_FORMAT) : undefined)
               }
               disabledDate={(current) => current && current > dayjs()}
               placeholder="Date of birth"
@@ -180,6 +189,12 @@ const RegistrationForm = () => {
           )}
         />
         <AddressFieldGroup
+          fieldNames={{
+            country: 'country',
+            city: 'city',
+            postalCode: 'postalCode',
+            streetName: 'streetName',
+          }}
           title="Shipping address"
           control={control}
           onChange={() =>
@@ -190,8 +205,13 @@ const RegistrationForm = () => {
           Use the same address for billing and shipping
         </Checkbox>
         <AddressFieldGroup
+          fieldNames={{
+            country: 'billingCountry',
+            city: 'billingCity',
+            postalCode: 'billingPostalCode',
+            streetName: 'billingStreetName',
+          }}
           title="Billing address"
-          isShipping={false}
           control={control}
           onChange={() =>
             setIsDefault({ ...isDefault, billing: !isDefault.billing })
