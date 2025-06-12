@@ -6,7 +6,7 @@ import { Outlet } from 'react-router';
 import Flexbox from '@components/Flexbox/Flexbox';
 import classes from './CatalogLayout.module.css';
 import SearchProducts from '@components/SearchProducts/SearchProducts';
-import { useScreenSize } from '@features/hooks/useScreenSize';
+import { useScreenSize } from '@hooks/useScreenSize';
 import { SortProducts } from '@components/SortProducts/SortProducts';
 
 const CatalogLayout = () => {

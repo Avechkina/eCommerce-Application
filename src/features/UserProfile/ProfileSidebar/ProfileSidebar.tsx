@@ -1,4 +1,4 @@
-import { useScreenSize } from '@features/hooks/useScreenSize';
+import { useScreenSize } from '@hooks/useScreenSize';
 import { Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { useLocation, useNavigate } from 'react-router';

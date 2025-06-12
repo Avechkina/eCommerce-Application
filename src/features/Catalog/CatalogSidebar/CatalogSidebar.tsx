@@ -1,4 +1,4 @@
-import { useScreenSize } from '@features/hooks/useScreenSize';
+import { useScreenSize } from '@hooks/useScreenSize';
 import useCategoryStore from '@store/categoryStore';
 import useSearchStore from '@store/searchStore';
 import useSortingStore from '@store/sortingStore';

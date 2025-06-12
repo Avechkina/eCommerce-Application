@@ -20,6 +20,8 @@ import dayjs from 'dayjs';
 import classes from './RegestrationForm.module.css';
 import AddressFieldGroup from '@components/AddressFieldGroup/AddressFieldGroup';
 import { COUNTRIES, DATE_FORMAT } from '@utils/constants';
+import { getApiRoot, getAuthClient } from '@services/BuildClient';
+import loginCustomer from '@utils/loginCustomer';
 
 const RegistrationForm = () => {
   const [error, setError] = useState({
@@ -119,7 +121,10 @@ const RegistrationForm = () => {
           defaultShippingAddress: isDefault.shipping ? 0 : undefined,
           defaultBillingAddress: defaultBillingAddress,
         };
-        const response = await createCustomer(customer);
+        await createCustomer(customer);
+        const authClient = getAuthClient(email, password);
+        const authApiRoot = getApiRoot(authClient);
+        const response = await loginCustomer(authApiRoot, customer);
         message.success({
           content: `Registration successful! Welcome aboard, ${response.body.customer.firstName}.`,
           duration: 1,
