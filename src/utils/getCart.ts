@@ -1,7 +1,7 @@
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
+import { apiRoot } from '@services/BuildClient';
 
-const getCart = (apiRoot: ByProjectKeyRequestBuilder) => {
-  return apiRoot.me().carts().get().execute;
+const getCart = () => {
+  return apiRoot.me().carts().get().execute();
 };
 
 export default getCart;
