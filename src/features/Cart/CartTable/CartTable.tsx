@@ -1,26 +1,27 @@
 import ControlledNumberInput from '@components/ControlledNumberInput/ControlledNumberInput';
-import { formatPrice } from '@utils/formatPrice';
 import getOrCreateCart from '@utils/getOrCreateCart';
-import { getProductPrice } from '@utils/getProductPrice';
 import { Table, TableProps } from 'antd';
 import { useEffect, useState } from 'react';
-
-type DataType = {
-  key: string;
-  product: string;
-  quantity: number;
-  price: string;
-  subtotal: string;
-};
+import CartProductCard from '../CartProductCard/CartProductCard';
+import useCartStore from '@store/cartStore';
+import { CartDetails, CartItem } from 'types/cart';
+import { formatCartItems } from '@utils/formatCartItems';
 
 const CartTable = () => {
-  const [data, setData] = useState<DataType[]>();
+  const { items, setItems } = useCartStore((state) => state);
+  const [cartDetails, setCartDetails] = useState<CartDetails>({
+    id: '',
+    version: 0,
+  });
 
-  const columns: TableProps<DataType>['columns'] = [
+  const columns: TableProps<CartItem>['columns'] = [
     {
       title: 'Product',
       dataIndex: 'product',
       key: 'product',
+      render: (value) => (
+        <CartProductCard product={value} cartDetails={cartDetails} />
+      ),
     },
     {
       title: 'Quantity',
@@ -44,18 +45,9 @@ const CartTable = () => {
     const fetchData = async () => {
       try {
         const cart = await getOrCreateCart();
-        console.log(cart.lineItems);
-        const items: DataType[] = cart.lineItems.map((item) => ({
-          key: item.id,
-          product: item.name['en-US'],
-          quantity: item.quantity,
-          price: getProductPrice(item),
-          subtotal: formatPrice(
-            item.totalPrice.centAmount,
-            item.totalPrice.currencyCode
-          ),
-        }));
-        setData(items);
+        setCartDetails({ id: cart.id, version: cart.version });
+        const items = formatCartItems(cart.lineItems);
+        setItems(items);
       } catch (error) {
         console.error(error);
       }
@@ -63,7 +55,7 @@ const CartTable = () => {
     fetchData();
   }, []);
 
-  return <Table<DataType> columns={columns} dataSource={data} />;
+  return <Table<CartItem> columns={columns} dataSource={items} />;
 };
 
 export default CartTable;

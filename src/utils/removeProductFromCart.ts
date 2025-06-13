@@ -5,7 +5,7 @@ const removeProductFromCart = (
   version: number,
   lineItemId: string
 ) => {
-  apiRoot
+  return apiRoot
     .me()
     .carts()
     .withId({ ID })
@@ -19,7 +19,8 @@ const removeProductFromCart = (
           },
         ],
       },
-    });
+    })
+    .execute();
 };
 
 export default removeProductFromCart;
