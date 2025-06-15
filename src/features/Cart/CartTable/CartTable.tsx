@@ -27,7 +27,13 @@ const CartTable = () => {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',
-      render: (value) => <ControlledNumberInput value={value} />,
+      render: (value, record) => (
+        <ControlledNumberInput
+          value={value}
+          productId={record.product.id}
+          cartDetails={cartDetails}
+        />
+      ),
     },
     {
       title: 'Price',

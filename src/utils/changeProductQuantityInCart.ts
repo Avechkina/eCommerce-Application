@@ -6,7 +6,7 @@ const changeProductQuantityInCart = (
   lineItemId: string,
   quantity: number
 ) => {
-  apiRoot
+  return apiRoot
     .me()
     .carts()
     .withId({ ID })
@@ -21,7 +21,8 @@ const changeProductQuantityInCart = (
           },
         ],
       },
-    });
+    })
+    .execute();
 };
 
 export default changeProductQuantityInCart;

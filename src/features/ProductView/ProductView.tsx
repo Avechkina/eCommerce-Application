@@ -21,7 +21,7 @@ import {
 } from '@ant-design/icons';
 import getOrCreateCart from '@utils/getOrCreateCart';
 import addProductToCart from '@utils/addProductToCart';
-import ControlledNumberInput from '@components/ControlledNumberInput/ControlledNumberInput';
+import ProductViewNumberInput from '@components/ProductViewNumberInput/ProductViewNumberInput';
 
 const { Title, Text } = Typography;
 
@@ -189,7 +189,7 @@ const ProductView = () => {
           {price?.discountedPrice ? price?.formattedPrice : undefined}
         </Text>
         <Flex gap="small" justify="center" style={{ marginTop: 10 }}>
-          <ControlledNumberInput value={quantity} onChange={changeQuantity} />
+          <ProductViewNumberInput value={quantity} onChange={changeQuantity} />
           <Button onClick={addToCart}>Add to Cart</Button>
         </Flex>
       </div>

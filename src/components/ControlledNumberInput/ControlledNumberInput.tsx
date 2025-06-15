@@ -1,13 +1,57 @@
-import { InputNumber } from 'antd';
+import useCartStore from '@store/cartStore';
+import changeProductQuantityInCart from '@utils/changeProductQuantityInCart';
+import { formatCartItems } from '@utils/formatCartItems';
+import { InputNumber, message } from 'antd';
+import { useState } from 'react';
+import { CartDetails } from 'types/cart';
 
 type Props = {
   value: number;
-  onChange?: (value: number | null) => void;
+  cartDetails: CartDetails;
+  productId: string;
 };
 
-const ControlledNumberInput = ({ value, onChange }: Props) => {
+const ControlledNumberInput = ({ value, cartDetails, productId }: Props) => {
+  const [quantity, setQuantity] = useState<number>(value);
+  const setItems = useCartStore((state) => state.setItems);
+
+  const handleChange = async (newQuantity: number) => {
+    try {
+      const response = await changeProductQuantityInCart(
+        cartDetails.id,
+        cartDetails.version,
+        productId,
+        newQuantity
+      );
+      const items = formatCartItems(response.body.lineItems);
+      setItems(items);
+    } catch (error) {
+      message.error({
+        content: `Failed to change product quantity`,
+        duration: 1,
+      });
+      console.error(error);
+    }
+  };
+
+  const changeQuantity = async (value: number | null) => {
+    if (value === null || value === 0) {
+      setQuantity(0);
+      await handleChange(0);
+    } else {
+      setQuantity(value);
+      await handleChange(value);
+    }
+  };
+
   return (
-    <InputNumber min={1} max={10} value={value} onChange={onChange} controls />
+    <InputNumber
+      min={0}
+      max={10}
+      value={quantity}
+      onChange={changeQuantity}
+      controls
+    />
   );
 };
 
