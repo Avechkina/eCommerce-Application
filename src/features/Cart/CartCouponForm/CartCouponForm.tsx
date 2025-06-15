@@ -38,12 +38,12 @@ const CartCouponForm = () => {
       );
       const items = formatCartItems(response.body.lineItems);
       const totalPrice = response.body.totalPrice;
-      const discount =
-        response.body.discountOnTotalPrice?.discountedAmount.centAmount;
       const subtotal = formatPrice(
         totalPrice.centAmount,
         totalPrice.currencyCode
       );
+      const discount =
+        response.body.discountOnTotalPrice?.discountedAmount.centAmount;
       if (discount) {
         const originalPrice = formatPrice(
           totalPrice.centAmount + discount,

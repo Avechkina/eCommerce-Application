@@ -21,6 +21,7 @@ const CartTable = () => {
       render: (value) => (
         <CartProductCard product={value} cartDetails={cartDetails} />
       ),
+      width: 220,
     },
     {
       title: 'Quantity',
@@ -65,7 +66,14 @@ const CartTable = () => {
     fetchData();
   }, [cartDetails.id, setDetails, setItems]);
 
-  return <Table<CartItem> columns={columns} dataSource={items} />;
+  return (
+    <Table<CartItem>
+      scroll={{ y: 350 }}
+      pagination={false}
+      columns={columns}
+      dataSource={items}
+    />
+  );
 };
 
 export default CartTable;

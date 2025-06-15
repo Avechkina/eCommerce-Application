@@ -23,6 +23,8 @@ import getOrCreateCart from '@utils/getOrCreateCart';
 import addProductToCart from '@utils/addProductToCart';
 import ProductViewNumberInput from '@components/ProductViewNumberInput/ProductViewNumberInput';
 import useCartStore from '@store/cartStore';
+import { formatCartItems } from '@utils/formatCartItems';
+import { formatPrice } from '@utils/formatPrice';
 
 const { Title, Text } = Typography;
 
@@ -33,7 +35,7 @@ const ProductView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
-  const { cartDetails, setDetails } = useCartStore((state) => state);
+  const { cartDetails, setDetails, setItems } = useCartStore((state) => state);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,11 +112,23 @@ const ProductView = () => {
     try {
       const cart = await getOrCreateCart(cartDetails.id);
       setDetails({ id: cart.id, version: cart.version });
-      await addProductToCart(cart.id, cart.version, productId, quantity);
+      const response = await addProductToCart(
+        cart.id,
+        cart.version,
+        productId,
+        quantity
+      );
       message.success({
         content: `${product.name['en-US']} added to Cart!`,
         duration: 1,
       });
+      const items = formatCartItems(response.body.lineItems);
+      const totalPrice = response.body.totalPrice;
+      const subtotal = formatPrice(
+        totalPrice.centAmount,
+        totalPrice.currencyCode
+      );
+      setItems(items, subtotal);
     } catch (error) {
       message.error({
         content: `Failed to add ${product.name['en-US']} to Cart`,

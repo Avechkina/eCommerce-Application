@@ -14,7 +14,7 @@ type Props = {
 
 const ControlledNumberInput = ({ value, cartDetails, productId }: Props) => {
   const [quantity, setQuantity] = useState<number>(value);
-  const setItems = useCartStore((state) => state.setItems);
+  const { setItems, setOriginalPrice } = useCartStore((state) => state);
 
   const handleChange = async (newQuantity: number) => {
     try {
@@ -31,6 +31,15 @@ const ControlledNumberInput = ({ value, cartDetails, productId }: Props) => {
         totalPrice.currencyCode
       );
       setItems(items, subtotal);
+      const discount =
+        response.body.discountOnTotalPrice?.discountedAmount.centAmount;
+      if (discount) {
+        const originalPrice = formatPrice(
+          totalPrice.centAmount + discount,
+          totalPrice.currencyCode
+        );
+        setOriginalPrice(originalPrice);
+      }
     } catch (error) {
       message.error({
         content: `Failed to change product quantity`,

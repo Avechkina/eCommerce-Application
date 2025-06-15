@@ -17,7 +17,7 @@ const CartProductCard = ({
   product: { id: productId, name, imgUrl },
   cartDetails: { id, version },
 }: Props) => {
-  const setItems = useCartStore((state) => state.setItems);
+  const { setItems, setOriginalPrice } = useCartStore((state) => state);
 
   const removeProduct = async () => {
     try {
@@ -29,6 +29,15 @@ const CartProductCard = ({
         totalPrice.currencyCode
       );
       setItems(items, subtotal);
+      const discount =
+        response.body.discountOnTotalPrice?.discountedAmount.centAmount;
+      if (discount) {
+        const originalPrice = formatPrice(
+          totalPrice.centAmount + discount,
+          totalPrice.currencyCode
+        );
+        setOriginalPrice(originalPrice);
+      }
     } catch (error) {
       console.error(error);
     }

@@ -8,11 +8,11 @@ import useCartStore from '@store/cartStore';
 import EmptyCartMessage from '../EmptyCartMessage/EmptyCartMessage';
 
 const CartLayout = () => {
-  const cartDetails = useCartStore((state) => state.cartDetails);
+  const items = useCartStore((state) => state.items);
 
   return (
     <Layout>
-      {cartDetails.id ? (
+      {items?.length ? (
         <>
           <Title level={2}>Cart</Title>
           <div className={classes.grid}>
