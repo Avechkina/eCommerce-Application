@@ -39,11 +39,13 @@ const CartTable = () => {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
+      responsive: ['md'],
     },
     {
       title: 'Subtotal',
       dataIndex: 'subtotal',
       key: 'subtotal',
+      responsive: ['sm'],
     },
   ];
 
@@ -68,6 +70,7 @@ const CartTable = () => {
 
   return (
     <Table<CartItem>
+      style={{ gridColumn: 'span 1' }}
       scroll={{ y: 350 }}
       pagination={false}
       columns={columns}

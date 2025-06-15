@@ -17,10 +17,18 @@ const CartLayout = () => {
         <>
           <Title level={2}>Cart</Title>
           <div className={classes.grid}>
-            <CartTable />
-            <CartCheckoutForm />
-            <ClearCartButton />
-            <CartCouponForm />
+            <div className="cart-table">
+              <CartTable />
+            </div>
+            <div className="cart-checkout">
+              <CartCheckoutForm />
+            </div>
+            <div className="clear-button">
+              <ClearCartButton />
+            </div>
+            <div className="coupon-form">
+              <CartCouponForm />
+            </div>
           </div>
         </>
       ) : (

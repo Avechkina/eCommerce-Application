@@ -1,9 +1,36 @@
 .grid {
   max-width: 1120px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0 1rem;
   display: grid;
   gap: 64px;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: 1fr auto;
-  justify-content: center;
+  grid-template-columns: minmax(530px, 1fr) minmax(251px, auto);
+  grid-template-areas:
+    'table checkout'
+    'clear coupon';
+}
+
+@media (max-width: 880px) {
+  .grid {
+    grid-template-columns: minmax(340px, 1fr);
+    grid-template-areas:
+      'table'
+      'checkout'
+      'clear'
+      'coupon';
+  }
+}
+
+.cart-table {
+  grid-area: table;
+}
+.cart-checkout {
+  grid-area: checkout;
+}
+.clear-button {
+  grid-area: clear;
+}
+.coupon-form {
+  grid-area: coupon;
 }
