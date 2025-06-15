@@ -4,16 +4,26 @@ import CartTable from '../CartTable/CartTable';
 import CartCheckoutForm from '../CartCheckoutForm/CartCheckoutForm';
 import CartCouponForm from '../CartCouponForm/CartCouponForm';
 import classes from './CartLayout.module.css';
+import useCartStore from '@store/cartStore';
+import EmptyCartMessage from '../EmptyCartMessage/EmptyCartMessage';
 
 const CartLayout = () => {
+  const cartDetails = useCartStore((state) => state.cartDetails);
+
   return (
     <Layout>
-      <Title level={2}>Cart</Title>
-      <div className={classes.grid}>
-        <CartTable />
-        <CartCheckoutForm />
-        <CartCouponForm />
-      </div>
+      {cartDetails.id ? (
+        <>
+          <Title level={2}>Cart</Title>
+          <div className={classes.grid}>
+            <CartTable />
+            <CartCheckoutForm />
+            <CartCouponForm />
+          </div>
+        </>
+      ) : (
+        <EmptyCartMessage />
+      )}
     </Layout>
   );
 };
