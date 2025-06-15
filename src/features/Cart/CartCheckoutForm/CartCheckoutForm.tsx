@@ -4,6 +4,7 @@ import classes from './CartCheckoutForm.module.css';
 import useCartStore from '@store/cartStore';
 
 const { Title, Text } = Typography;
+
 const style: React.CSSProperties = {
   border: '1px solid #6C7275',
   borderRadius: '4px',
@@ -14,7 +15,7 @@ const style: React.CSSProperties = {
 
 const CartCheckoutForm = () => {
   const [value, setValue] = useState(1);
-  const subtotal = useCartStore((state) => state.subtotal);
+  const { subtotal, originalPrice } = useCartStore((state) => state);
 
   const onChange = (e: RadioChangeEvent) => {
     setValue(e.target.value);
@@ -41,6 +42,12 @@ const CartCheckoutForm = () => {
         ]}
       />
       <div className={classes.grid}>
+        {originalPrice && (
+          <>
+            <Text>Original price</Text>
+            <Text delete>{originalPrice}</Text>
+          </>
+        )}
         <Text>Subtotal</Text>
         <Text strong>{subtotal}</Text>
         <Divider style={{ gridColumn: 'span 2', margin: '10px 0' }} />

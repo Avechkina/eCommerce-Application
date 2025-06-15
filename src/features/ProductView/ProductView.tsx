@@ -22,6 +22,7 @@ import {
 import getOrCreateCart from '@utils/getOrCreateCart';
 import addProductToCart from '@utils/addProductToCart';
 import ProductViewNumberInput from '@components/ProductViewNumberInput/ProductViewNumberInput';
+import useCartStore from '@store/cartStore';
 
 const { Title, Text } = Typography;
 
@@ -32,6 +33,7 @@ const ProductView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+  const { cartDetails, setDetails } = useCartStore((state) => state);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,7 +108,8 @@ const ProductView = () => {
 
   const addToCart = async () => {
     try {
-      const cart = await getOrCreateCart();
+      const cart = await getOrCreateCart(cartDetails.id);
+      setDetails({ id: cart.id, version: cart.version });
       await addProductToCart(cart.id, cart.version, productId, quantity);
       message.success({
         content: `${product.name['en-US']} added to Cart!`,

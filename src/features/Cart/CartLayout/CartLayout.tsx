@@ -1,18 +1,19 @@
-import { Flex, Layout } from 'antd';
+import { Layout } from 'antd';
 import Title from 'antd/es/typography/Title';
 import CartTable from '../CartTable/CartTable';
 import CartCheckoutForm from '../CartCheckoutForm/CartCheckoutForm';
 import CartCouponForm from '../CartCouponForm/CartCouponForm';
+import classes from './CartLayout.module.css';
 
 const CartLayout = () => {
   return (
     <Layout>
       <Title level={2}>Cart</Title>
-      <Flex gap="large" justify="center" wrap>
+      <div className={classes.grid}>
         <CartTable />
         <CartCheckoutForm />
-      </Flex>
-      <CartCouponForm />
+        <CartCouponForm />
+      </div>
     </Layout>
   );
 };

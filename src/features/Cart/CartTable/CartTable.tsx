@@ -1,19 +1,17 @@
 import ControlledNumberInput from '@components/ControlledNumberInput/ControlledNumberInput';
 import getOrCreateCart from '@utils/getOrCreateCart';
 import { Table, TableProps } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import CartProductCard from '../CartProductCard/CartProductCard';
 import useCartStore from '@store/cartStore';
-import { CartDetails, CartItem } from 'types/cart';
+import { CartItem } from 'types/cart';
 import { formatCartItems } from '@utils/formatCartItems';
 import { formatPrice } from '@utils/formatPrice';
 
 const CartTable = () => {
-  const { items, setItems } = useCartStore((state) => state);
-  const [cartDetails, setCartDetails] = useState<CartDetails>({
-    id: '',
-    version: 0,
-  });
+  const { items, setItems, cartDetails, setDetails } = useCartStore(
+    (state) => state
+  );
 
   const columns: TableProps<CartItem>['columns'] = [
     {
@@ -51,8 +49,8 @@ const CartTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cart = await getOrCreateCart();
-        setCartDetails({ id: cart.id, version: cart.version });
+        const cart = await getOrCreateCart(cartDetails.id);
+        setDetails({ id: cart.id, version: cart.version });
         const items = formatCartItems(cart.lineItems);
         const totalPrice = cart.totalPrice;
         const subtotal = formatPrice(
@@ -65,7 +63,7 @@ const CartTable = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [cartDetails.id, setDetails, setItems]);
 
   return <Table<CartItem> columns={columns} dataSource={items} />;
 };

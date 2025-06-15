@@ -1,10 +1,10 @@
 import createCart from './createCart';
 import getCart from './getCart';
 
-const getOrCreateCart = async () => {
-  const response = await getCart();
-  let cart = response.body.results[0];
-  if (!cart) {
+const getOrCreateCart = async (ID: string) => {
+  const response = await getCart(ID);
+  let cart = response.body;
+  if (!cart.id) {
     const response = await createCart();
     cart = response.body;
   }

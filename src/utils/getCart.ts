@@ -1,7 +1,7 @@
 import { apiRoot } from '@services/BuildClient';
 
-const getCart = () => {
-  return apiRoot.me().carts().get().execute();
+const getCart = (ID: string) => {
+  return apiRoot.me().carts().withId({ ID }).get().execute();
 };
 
 export default getCart;
