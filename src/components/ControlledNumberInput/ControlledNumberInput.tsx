@@ -35,9 +35,8 @@ const ControlledNumberInput = ({ value, cartDetails, productId }: Props) => {
   };
 
   const changeQuantity = async (value: number | null) => {
-    if (value === null || value === 0) {
-      setQuantity(0);
-      await handleChange(0);
+    if (value === null) {
+      return;
     } else {
       setQuantity(value);
       await handleChange(value);
