@@ -1,6 +1,7 @@
 import useCartStore from '@store/cartStore';
 import changeProductQuantityInCart from '@utils/changeProductQuantityInCart';
 import { formatCartItems } from '@utils/formatCartItems';
+import { formatPrice } from '@utils/formatPrice';
 import { InputNumber, message } from 'antd';
 import { useState } from 'react';
 import { CartDetails } from 'types/cart';
@@ -24,7 +25,12 @@ const ControlledNumberInput = ({ value, cartDetails, productId }: Props) => {
         newQuantity
       );
       const items = formatCartItems(response.body.lineItems);
-      setItems(items);
+      const totalPrice = response.body.totalPrice;
+      const subtotal = formatPrice(
+        totalPrice.centAmount,
+        totalPrice.currencyCode
+      );
+      setItems(items, subtotal);
     } catch (error) {
       message.error({
         content: `Failed to change product quantity`,

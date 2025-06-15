@@ -6,6 +6,7 @@ import CartProductCard from '../CartProductCard/CartProductCard';
 import useCartStore from '@store/cartStore';
 import { CartDetails, CartItem } from 'types/cart';
 import { formatCartItems } from '@utils/formatCartItems';
+import { formatPrice } from '@utils/formatPrice';
 
 const CartTable = () => {
   const { items, setItems } = useCartStore((state) => state);
@@ -53,7 +54,12 @@ const CartTable = () => {
         const cart = await getOrCreateCart();
         setCartDetails({ id: cart.id, version: cart.version });
         const items = formatCartItems(cart.lineItems);
-        setItems(items);
+        const totalPrice = cart.totalPrice;
+        const subtotal = formatPrice(
+          totalPrice.centAmount,
+          totalPrice.currencyCode
+        );
+        setItems(items, subtotal);
       } catch (error) {
         console.error(error);
       }

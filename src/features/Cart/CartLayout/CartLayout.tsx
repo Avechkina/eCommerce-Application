@@ -8,7 +8,7 @@ const CartLayout = () => {
   return (
     <Layout>
       <Title level={2}>Cart</Title>
-      <Flex>
+      <Flex gap="large" justify="center" wrap>
         <CartTable />
         <CartCheckoutForm />
       </Flex>

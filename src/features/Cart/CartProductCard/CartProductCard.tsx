@@ -1,6 +1,7 @@
 import { CloseOutlined } from '@ant-design/icons';
 import useCartStore from '@store/cartStore';
 import { formatCartItems } from '@utils/formatCartItems';
+import { formatPrice } from '@utils/formatPrice';
 import removeProductFromCart from '@utils/removeProductFromCart';
 import { Button, Flex, Typography } from 'antd';
 import { CartDetails, Product } from 'types/cart';
@@ -22,7 +23,12 @@ const CartProductCard = ({
     try {
       const response = await removeProductFromCart(id, version, productId);
       const items = formatCartItems(response.body.lineItems);
-      setItems(items);
+      const totalPrice = response.body.totalPrice;
+      const subtotal = formatPrice(
+        totalPrice.centAmount,
+        totalPrice.currencyCode
+      );
+      setItems(items, subtotal);
     } catch (error) {
       console.error(error);
     }

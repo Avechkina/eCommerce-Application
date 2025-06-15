@@ -1,0 +1,19 @@
+.form {
+  border: 1px solid #6c7275;
+  border-radius: 4px;
+  padding: 24px;
+}
+
+.grid {
+  text-align: start;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto 1fr;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
