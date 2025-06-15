@@ -25,12 +25,9 @@ const useCartStore = create<CartState>()((set) => ({
   setOriginalPrice: (originalPrice) => set({ originalPrice }),
   resetCart: () =>
     set({
-      items: [],
+      items: undefined,
       subtotal: '',
-      cartDetails: {
-        id: '',
-        version: 0,
-      },
+      originalPrice: '',
     }),
 }));
 

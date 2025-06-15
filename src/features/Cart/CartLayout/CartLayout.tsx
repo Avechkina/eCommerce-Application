@@ -6,9 +6,10 @@ import CartCouponForm from '../CartCouponForm/CartCouponForm';
 import classes from './CartLayout.module.css';
 import useCartStore from '@store/cartStore';
 import EmptyCartMessage from '../EmptyCartMessage/EmptyCartMessage';
+import ClearCartButton from '@components/ClearCartButton/ClearCartButton';
 
 const CartLayout = () => {
-  const items = useCartStore((state) => state.items);
+  const { items } = useCartStore((state) => state);
 
   return (
     <Layout>
@@ -18,6 +19,7 @@ const CartLayout = () => {
           <div className={classes.grid}>
             <CartTable />
             <CartCheckoutForm />
+            <ClearCartButton />
             <CartCouponForm />
           </div>
         </>
