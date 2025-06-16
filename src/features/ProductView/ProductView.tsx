@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { useLocation } from 'react-router';
 import {
+  DeleteOutlined,
   LeftOutlined,
   LoadingOutlined,
   RightOutlined,
@@ -25,6 +26,7 @@ import ProductViewNumberInput from '@components/ProductViewNumberInput/ProductVi
 import useCartStore from '@store/cartStore';
 import { formatCartItems } from '@utils/formatCartItems';
 import { formatPrice } from '@utils/formatPrice';
+import removeProductFromCart from '@utils/removeProductFromCart';
 
 const { Title, Text } = Typography;
 
@@ -35,7 +37,8 @@ const ProductView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
-  const { cartDetails, setDetails, setItems } = useCartStore((state) => state);
+  const { cartDetails, setDetails, items, setItems, setOriginalPrice } =
+    useCartStore((state) => state);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -138,6 +141,47 @@ const ProductView = () => {
     }
   };
 
+  const removeProduct = async () => {
+    if (!items) return;
+    const id = items.find((item) => item.product.productId === productId)
+      ?.product.id;
+    if (!id) return;
+    try {
+      const response = await removeProductFromCart(
+        cartDetails.id,
+        cartDetails.version,
+        id
+      );
+      const items = formatCartItems(response.body.lineItems);
+      const totalPrice = response.body.totalPrice;
+      const subtotal = formatPrice(
+        totalPrice.centAmount,
+        totalPrice.currencyCode
+      );
+      setItems(items, subtotal);
+      message.success({
+        content: `${product.name['en-US']} removed from Cart!`,
+        duration: 1,
+      });
+
+      const discount =
+        response.body.discountOnTotalPrice?.discountedAmount.centAmount;
+      if (discount) {
+        const originalPrice = formatPrice(
+          totalPrice.centAmount + discount,
+          totalPrice.currencyCode
+        );
+        setOriginalPrice(originalPrice);
+      }
+    } catch (error) {
+      message.error({
+        content: `Failed to remove ${product.name['en-US']} from Cart`,
+        duration: 1,
+      });
+      console.error(error);
+    }
+  };
+
   const changeQuantity = (value: number | null) => {
     if (value === null) {
       setQuantity(1);
@@ -205,9 +249,28 @@ const ProductView = () => {
         <Text delete>
           {price?.discountedPrice ? price?.formattedPrice : undefined}
         </Text>
+
         <Flex gap="small" justify="center" style={{ marginTop: 10 }}>
-          <ProductViewNumberInput value={quantity} onChange={changeQuantity} />
-          <Button onClick={addToCart}>Add to Cart</Button>
+          {items &&
+          Boolean(
+            items.find((item) => item.product.productId === productId)
+          ) ? (
+            <Button
+              onClick={removeProduct}
+              type="text"
+              icon={<DeleteOutlined />}
+            >
+              Remove from Cart
+            </Button>
+          ) : (
+            <>
+              <ProductViewNumberInput
+                value={quantity}
+                onChange={changeQuantity}
+              />
+              <Button onClick={addToCart}>Add to Cart</Button>
+            </>
+          )}
         </Flex>
       </div>
     </Flex>

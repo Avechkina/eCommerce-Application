@@ -8,6 +8,7 @@ export const formatCartItems = (items: LineItem[]): CartItem[] => {
     key: item.id,
     product: {
       id: item.id,
+      productId: item.productId,
       name: item.name['en-US'],
       imgUrl: item.variant.images && item.variant.images[0].url,
     },
