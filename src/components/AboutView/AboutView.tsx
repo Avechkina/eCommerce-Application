@@ -12,7 +12,9 @@ export const AboutView = () => {
             name={memeber.name}
             key={memeber.name}
             image={memeber.image}
-            description={memeber.description}
+            role={memeber.role}
+            city={memeber.city}
+            contribution={memeber.contribution}
             github_url={memeber.github_url}
           />
         ))}
