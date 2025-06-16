@@ -1,0 +1,81 @@
+.about_card_image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.about_card_image {
+  margin-bottom: 8px;
+}
+
+.about_card {
+  display: flex;
+  flex-direction: column;
+  color: #141718;
+  min-width: 200px;
+  max-width: 400px;
+  transition: 0.3s;
+  background-color: #fff;
+  padding-bottom: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: default;
+  width: 30%;
+  height: fit-content;
+  @media (width < 680px) {
+    width: auto;
+  }
+}
+
+.about_card:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.about_card_info {
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.about_card_name {
+  font-size: 18px;
+  font-weight: 600;
+  align-content: center;
+}
+
+.about_card_role {
+  font-size: 12px;
+  color: grey;
+  align-content: center;
+}
+
+.about_card_description {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.gh_icon {
+  cursor: pointer;
+}
+
+.ul {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+}
+
+.li {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.li::before {
+  content: '-';
+  margin-right: 5px;
+}
