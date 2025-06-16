@@ -16,6 +16,7 @@ import {
   DeleteOutlined,
   LeftOutlined,
   LoadingOutlined,
+  PlusOutlined,
   RightOutlined,
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -193,7 +194,7 @@ const ProductView = () => {
 
   return (
     <Flex
-      style={{ width: '80%', margin: '0 auto' }}
+      style={{ width: '90%', margin: '0 auto' }}
       gap="middle"
       wrap
       justify="space-between"
@@ -268,7 +269,9 @@ const ProductView = () => {
                 value={quantity}
                 onChange={changeQuantity}
               />
-              <Button onClick={addToCart}>Add to Cart</Button>
+              <Button icon={<PlusOutlined />} onClick={addToCart}>
+                Add to Cart
+              </Button>
             </>
           )}
         </Flex>
