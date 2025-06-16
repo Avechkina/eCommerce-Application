@@ -27,6 +27,7 @@ import useCartStore from '@store/cartStore';
 import { formatCartItems } from '@utils/formatCartItems';
 import { formatPrice } from '@utils/formatPrice';
 import removeProductFromCart from '@utils/removeProductFromCart';
+import ProductAttribute from '@components/ProductAttribute/ProductAttribute';
 
 const { Title, Text } = Typography;
 
@@ -192,10 +193,10 @@ const ProductView = () => {
 
   return (
     <Flex
-      style={{ width: '100%' }}
+      style={{ width: '80%', margin: '0 auto' }}
       gap="middle"
       wrap
-      justify="center"
+      justify="space-between"
       align="center"
     >
       <div style={{ maxWidth: 400, width: '100%' }}>
@@ -249,7 +250,6 @@ const ProductView = () => {
         <Text delete>
           {price?.discountedPrice ? price?.formattedPrice : undefined}
         </Text>
-
         <Flex gap="small" justify="center" style={{ marginTop: 10 }}>
           {items &&
           Boolean(
@@ -273,6 +273,11 @@ const ProductView = () => {
           )}
         </Flex>
       </div>
+      <Flex vertical gap="small" style={{ width: '100%' }}>
+        {product.masterVariant.attributes?.map((attribute) => (
+          <ProductAttribute key={attribute.name} attribute={attribute} />
+        ))}
+      </Flex>
     </Flex>
   );
 };
