@@ -5,6 +5,7 @@ import useUserStore from '@store/userStore';
 import {
   LoginOutlined,
   LogoutOutlined,
+  ShoppingOutlined,
   UserAddOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -78,6 +79,13 @@ const Navigation = () => {
             </Tooltip>
           </>
         )}
+        <Tooltip title="Cart">
+          <Button
+            icon={<ShoppingOutlined />}
+            onClick={() => navigate('/basket')}
+            type="link"
+          ></Button>
+        </Tooltip>
       </div>
     </nav>
   );

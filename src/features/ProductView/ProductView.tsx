@@ -1,4 +1,13 @@
-import { Carousel, Flex, Image, Space, Spin, Typography } from 'antd';
+import {
+  Button,
+  Carousel,
+  Flex,
+  Image,
+  message,
+  Space,
+  Spin,
+  Typography,
+} from 'antd';
 import getProduct from '@utils/getProduct';
 import { useEffect, useState } from 'react';
 import { ProductProjection } from '@commercetools/platform-sdk';
@@ -10,6 +19,12 @@ import {
   ZoomInOutlined,
   ZoomOutOutlined,
 } from '@ant-design/icons';
+import getOrCreateCart from '@utils/getOrCreateCart';
+import addProductToCart from '@utils/addProductToCart';
+import ProductViewNumberInput from '@components/ProductViewNumberInput/ProductViewNumberInput';
+import useCartStore from '@store/cartStore';
+import { formatCartItems } from '@utils/formatCartItems';
+import { formatPrice } from '@utils/formatPrice';
 
 const { Title, Text } = Typography;
 
@@ -19,6 +34,8 @@ const ProductView = () => {
   const [product, setProduct] = useState<ProductProjection>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
+  const { cartDetails, setDetails, setItems } = useCartStore((state) => state);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,6 +108,44 @@ const ProductView = () => {
 
   const price = getProductPrice();
 
+  const addToCart = async () => {
+    try {
+      const cart = await getOrCreateCart(cartDetails.id);
+      setDetails({ id: cart.id, version: cart.version });
+      const response = await addProductToCart(
+        cart.id,
+        cart.version,
+        productId,
+        quantity
+      );
+      message.success({
+        content: `${product.name['en-US']} added to Cart!`,
+        duration: 1,
+      });
+      const items = formatCartItems(response.body.lineItems);
+      const totalPrice = response.body.totalPrice;
+      const subtotal = formatPrice(
+        totalPrice.centAmount,
+        totalPrice.currencyCode
+      );
+      setItems(items, subtotal);
+    } catch (error) {
+      message.error({
+        content: `Failed to add ${product.name['en-US']} to Cart`,
+        duration: 1,
+      });
+      console.error(error);
+    }
+  };
+
+  const changeQuantity = (value: number | null) => {
+    if (value === null) {
+      setQuantity(1);
+    } else {
+      setQuantity(value);
+    }
+  };
+
   return (
     <Flex
       style={{ width: '100%' }}
@@ -150,6 +205,10 @@ const ProductView = () => {
         <Text delete>
           {price?.discountedPrice ? price?.formattedPrice : undefined}
         </Text>
+        <Flex gap="small" justify="center" style={{ marginTop: 10 }}>
+          <ProductViewNumberInput value={quantity} onChange={changeQuantity} />
+          <Button onClick={addToCart}>Add to Cart</Button>
+        </Flex>
       </div>
     </Flex>
   );

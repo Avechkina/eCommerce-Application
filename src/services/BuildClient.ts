@@ -3,36 +3,30 @@ import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { tokenStore } from '@utils/tokenStore';
 
 const {
-  VITE_CTP_PROJECT_KEY,
+  VITE_CTP_PROJECT_KEY: PROJECT_KEY,
   VITE_CTP_CLIENT_ID,
   VITE_CTP_CLIENT_SECRET,
-  VITE_CTP_AUTH_URL,
-  VITE_CTP_API_URL,
+  VITE_CTP_AUTH_URL: OAUTH_URI,
+  VITE_CTP_API_URL: BASE_URI,
   //VITE_CTP_SCOPES: scope,
 } = import.meta.env;
 
-const BASE_URI = VITE_CTP_API_URL;
-const OAUTH_URI = VITE_CTP_AUTH_URL;
-const PROJECT_KEY = VITE_CTP_PROJECT_KEY;
 const CREDENTIALS = {
   clientId: VITE_CTP_CLIENT_ID,
   clientSecret: VITE_CTP_CLIENT_SECRET,
 };
 
-const getClient = (): Client => {
+export const getAnonymClient = (): Client => {
   return new ClientBuilder()
-    .defaultClient(BASE_URI, CREDENTIALS, OAUTH_URI, PROJECT_KEY)
+    .withProjectKey(PROJECT_KEY)
+    .withAnonymousSessionFlow({
+      host: OAUTH_URI,
+      projectKey: PROJECT_KEY,
+      credentials: CREDENTIALS,
+    })
+    .withHttpMiddleware({ host: BASE_URI })
     .build();
 };
-
-export const getApiRoot = (client: Client) => {
-  return createApiBuilderFromCtpClient(client).withProjectKey({
-    projectKey: PROJECT_KEY,
-  });
-};
-
-const client = getClient();
-export const apiRoot = getApiRoot(client);
 
 export const getAuthClient = (username: string, password: string): Client => {
   return new ClientBuilder()
@@ -60,3 +54,12 @@ export const getTokenClient = (refreshToken: string): Client => {
     .withHttpMiddleware({ host: BASE_URI })
     .build();
 };
+
+export const getApiRoot = (client: Client) => {
+  return createApiBuilderFromCtpClient(client).withProjectKey({
+    projectKey: PROJECT_KEY,
+  });
+};
+
+const client = getAnonymClient();
+export const apiRoot = getApiRoot(client);

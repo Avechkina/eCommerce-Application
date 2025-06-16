@@ -19,6 +19,7 @@ import Profile from './routes/Profile.tsx';
 import PrivateRoute from '@features/Routing/PrivateRoute.tsx';
 import ProfileHome from '@features/UserProfile/ProfileHome/ProfileHome.tsx';
 import ProfileAddresses from '@features/UserProfile/ProfileAddresses/ProfileAddresses.tsx';
+import Cart from '@routes/Cart.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -44,6 +45,7 @@ createRoot(document.getElementById('root')!).render(
             />
           </Route>
           <Route path="about" element={<About />} />
+          <Route path="basket" element={<Cart />} />
           <Route element={<PublicRoute />}>
             <Route path="signup" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
