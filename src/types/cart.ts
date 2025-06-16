@@ -8,6 +8,7 @@ export type CartItem = {
 
 export type Product = {
   id: string;
+  productId: string;
   name: string;
   imgUrl: string | undefined;
 };

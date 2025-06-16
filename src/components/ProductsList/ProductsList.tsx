@@ -1,12 +1,14 @@
 import getProducts from '@utils/getProducts';
-import { useEffect, useState } from 'react';
-import {
-  ProductCard,
-  TProductCardProps,
-} from '@components/ProductCard/ProductCard';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { TProductCardProps } from '@components/ProductCard/ProductCard';
 import useCategoryStore from '@store/categoryStore';
 import useSearchStore from '@store/searchStore';
 import useSortingStore from '@store/sortingStore';
+import { Skeleton } from 'antd';
+import classes from './ProductsList.module.css';
+
+const ProductCard = lazy(() => import('@components/ProductCard/ProductCard'));
+
 export function ProductsList() {
   const [products, setProducts] = useState<TProductCardProps[]>([]);
   const id = useCategoryStore((state) => state.id);
@@ -49,16 +51,20 @@ export function ProductsList() {
     <>
       {products.length
         ? products.map((product) => (
-            <ProductCard
-              id={product.id}
+            <Suspense
               key={product.id}
-              name={product.name}
-              image={product.image}
-              price={product.price}
-              discont={product.discont}
-              slug={product.slug}
-              description={product.description}
-            />
+              fallback={<Skeleton className={classes.skeleton} active />}
+            >
+              <ProductCard
+                id={product.id}
+                name={product.name}
+                image={product.image}
+                price={product.price}
+                discont={product.discont}
+                slug={product.slug}
+                description={product.description}
+              />
+            </Suspense>
           ))
         : 'No products found'}
     </>

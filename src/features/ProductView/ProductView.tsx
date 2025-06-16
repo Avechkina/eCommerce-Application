@@ -13,8 +13,10 @@ import { useEffect, useState } from 'react';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { useLocation } from 'react-router';
 import {
+  DeleteOutlined,
   LeftOutlined,
   LoadingOutlined,
+  PlusOutlined,
   RightOutlined,
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -25,6 +27,8 @@ import ProductViewNumberInput from '@components/ProductViewNumberInput/ProductVi
 import useCartStore from '@store/cartStore';
 import { formatCartItems } from '@utils/formatCartItems';
 import { formatPrice } from '@utils/formatPrice';
+import removeProductFromCart from '@utils/removeProductFromCart';
+import ProductAttribute from '@components/ProductAttribute/ProductAttribute';
 
 const { Title, Text } = Typography;
 
@@ -35,7 +39,8 @@ const ProductView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
-  const { cartDetails, setDetails, setItems } = useCartStore((state) => state);
+  const { cartDetails, setDetails, items, setItems, setOriginalPrice } =
+    useCartStore((state) => state);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -138,6 +143,47 @@ const ProductView = () => {
     }
   };
 
+  const removeProduct = async () => {
+    if (!items) return;
+    const id = items.find((item) => item.product.productId === productId)
+      ?.product.id;
+    if (!id) return;
+    try {
+      const response = await removeProductFromCart(
+        cartDetails.id,
+        cartDetails.version,
+        id
+      );
+      const items = formatCartItems(response.body.lineItems);
+      const totalPrice = response.body.totalPrice;
+      const subtotal = formatPrice(
+        totalPrice.centAmount,
+        totalPrice.currencyCode
+      );
+      setItems(items, subtotal);
+      message.success({
+        content: `${product.name['en-US']} removed from Cart!`,
+        duration: 1,
+      });
+
+      const discount =
+        response.body.discountOnTotalPrice?.discountedAmount.centAmount;
+      if (discount) {
+        const originalPrice = formatPrice(
+          totalPrice.centAmount + discount,
+          totalPrice.currencyCode
+        );
+        setOriginalPrice(originalPrice);
+      }
+    } catch (error) {
+      message.error({
+        content: `Failed to remove ${product.name['en-US']} from Cart`,
+        duration: 1,
+      });
+      console.error(error);
+    }
+  };
+
   const changeQuantity = (value: number | null) => {
     if (value === null) {
       setQuantity(1);
@@ -148,10 +194,10 @@ const ProductView = () => {
 
   return (
     <Flex
-      style={{ width: '100%' }}
+      style={{ width: '90%', margin: '0 auto' }}
       gap="middle"
       wrap
-      justify="center"
+      justify="space-between"
       align="center"
     >
       <div style={{ maxWidth: 400, width: '100%' }}>
@@ -206,10 +252,35 @@ const ProductView = () => {
           {price?.discountedPrice ? price?.formattedPrice : undefined}
         </Text>
         <Flex gap="small" justify="center" style={{ marginTop: 10 }}>
-          <ProductViewNumberInput value={quantity} onChange={changeQuantity} />
-          <Button onClick={addToCart}>Add to Cart</Button>
+          {items &&
+          Boolean(
+            items.find((item) => item.product.productId === productId)
+          ) ? (
+            <Button
+              onClick={removeProduct}
+              type="text"
+              icon={<DeleteOutlined />}
+            >
+              Remove from Cart
+            </Button>
+          ) : (
+            <>
+              <ProductViewNumberInput
+                value={quantity}
+                onChange={changeQuantity}
+              />
+              <Button icon={<PlusOutlined />} onClick={addToCart}>
+                Add to Cart
+              </Button>
+            </>
+          )}
         </Flex>
       </div>
+      <Flex vertical gap="small" style={{ width: '100%' }}>
+        {product.masterVariant.attributes?.map((attribute) => (
+          <ProductAttribute key={attribute.name} attribute={attribute} />
+        ))}
+      </Flex>
     </Flex>
   );
 };
