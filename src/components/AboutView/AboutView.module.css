@@ -1,0 +1,11 @@
+.h1 {
+  font-size: 1.6em;
+}
+
+.wrapper {
+  padding: 1em 4em;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+}
