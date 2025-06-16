@@ -1,3 +1,5 @@
+import { AboutCard } from "@components/AboutCard/AboutCard";
+
 const About = () => {
   return (
     <>
@@ -7,6 +9,12 @@ const About = () => {
         }}
       >
         <h1>About page</h1>
+        <AboutCard 
+          name="Test"
+          image=""
+          description="Lorem ipsum"
+          github_url="https://github.com/Avechkina"
+        />
       </div>
     </>
   );
