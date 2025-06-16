@@ -54,3 +54,32 @@ export const TEAM_INFO = [
     ],
   },
 ];
+
+export const STACK = [
+  {
+    name: 'React',
+    url: 'https://react.dev/',
+    img: './images/stack/react.svg',
+  },
+  {
+    name: 'TypeScript',
+    url: 'https://www.typescriptlang.org/',
+    img: './images/stack/typescript.svg',
+  },
+  {
+    name: 'Vite',
+    url: 'https://vite.dev/',
+    img: './images/stack/vite.svg',
+  },
+  {
+    name: 'GitHub',
+    url: 'https://github.com/',
+    img: './images/stack/github.svg',
+  },
+];
+
+export const RSS =   {
+    name: 'RSSchool',
+    url: 'https://rs.school/',
+    img: './images/stack/rss-logo.svg',
+  }
