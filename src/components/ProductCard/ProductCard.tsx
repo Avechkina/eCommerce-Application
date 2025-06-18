@@ -24,7 +24,9 @@ const ProductCard = (props: TProductCardProps) => {
   const { id, image, name, price, discont, description, slug } = props;
   const navigate = useNavigate();
   const { categoryName, subcategoryName } = useParams();
-  const { cartDetails, setDetails, setItems } = useCartStore((state) => state);
+  const { cartDetails, setDetails, items, setItems } = useCartStore(
+    (state) => state
+  );
 
   const handleClick = () => {
     let productUrl = '';
@@ -88,6 +90,7 @@ const ProductCard = (props: TProductCardProps) => {
         style={{ maxWidth: 'fit-content', margin: '8px auto' }}
         icon={<PlusOutlined />}
         onClick={addToCart}
+        disabled={Boolean(items?.find((item) => item.product.productId === id))}
       >
         Add to Cart
       </Button>
