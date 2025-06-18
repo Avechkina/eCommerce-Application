@@ -34,7 +34,7 @@ export function AboutCard(props: TAboutCardProps) {
           </ul>
         </div>
         <a href={`${github_url}`} target="blank">
-          <GithubOutlined className={classes.gh_icon} />
+          <GithubOutlined style={{ fontSize: 30 }} />
         </a>
       </div>
     </div>
