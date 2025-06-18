@@ -26,6 +26,7 @@
   justify-content: center;
   gap: 15px;
   padding: 15px;
+  flex-wrap: wrap;
 }
 
 .li {
@@ -44,5 +45,5 @@
 
 .div_rss img {
   cursor: pointer;
-height: 150px;
+  height: 150px;
 }
