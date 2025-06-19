@@ -141,7 +141,6 @@ const ProductView = () => {
           totalPrice.currencyCode
         );
         setOriginalPrice(originalPrice);
-        setItems(items, subtotal);
       }
       setItems(items, subtotal);
     } catch (error) {
