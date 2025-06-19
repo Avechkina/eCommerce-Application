@@ -133,6 +133,16 @@ const ProductView = () => {
         totalPrice.centAmount,
         totalPrice.currencyCode
       );
+      const discount =
+        response.body.discountOnTotalPrice?.discountedAmount.centAmount;
+      if (discount) {
+        const originalPrice = formatPrice(
+          totalPrice.centAmount + discount,
+          totalPrice.currencyCode
+        );
+        setOriginalPrice(originalPrice);
+        setItems(items, subtotal);
+      }
       setItems(items, subtotal);
     } catch (error) {
       message.error({
