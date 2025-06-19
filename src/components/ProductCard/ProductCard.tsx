@@ -24,9 +24,8 @@ const ProductCard = (props: TProductCardProps) => {
   const { id, image, name, price, discont, description, slug } = props;
   const navigate = useNavigate();
   const { categoryName, subcategoryName } = useParams();
-  const { cartDetails, setDetails, items, setItems } = useCartStore(
-    (state) => state
-  );
+  const { cartDetails, setDetails, items, setItems, setOriginalPrice } =
+    useCartStore((state) => state);
 
   const handleClick = () => {
     let productUrl = '';
@@ -59,7 +58,16 @@ const ProductCard = (props: TProductCardProps) => {
         totalPrice.centAmount,
         totalPrice.currencyCode
       );
-      setItems(items, subtotal);
+      const discount =
+        response.body.discountOnTotalPrice?.discountedAmount.centAmount;
+      if (discount) {
+        const originalPrice = formatPrice(
+          totalPrice.centAmount + discount,
+          totalPrice.currencyCode
+        );
+        setOriginalPrice(originalPrice);
+        setItems(items, subtotal);
+      }
     } catch (error) {
       message.error({
         content: `Failed to add ${name} to Cart`,
