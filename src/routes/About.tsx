@@ -1,15 +1,7 @@
+import { AboutView } from '@components/AboutView/AboutView';
+
 const About = () => {
-  return (
-    <>
-      <div
-        style={{
-          flex: 1,
-        }}
-      >
-        <h1>About page</h1>
-      </div>
-    </>
-  );
+  return <AboutView />;
 };
 
 export default About;

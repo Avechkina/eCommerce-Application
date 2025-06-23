@@ -1,10 +1,11 @@
 import { NavLink, useNavigate } from 'react-router';
 import classes from './Navigation.module.css';
-import { Button, Tooltip } from 'antd';
+import { Badge, Button, Tooltip } from 'antd';
 import useUserStore from '@store/userStore';
 import {
   LoginOutlined,
   LogoutOutlined,
+  ShoppingOutlined,
   UserAddOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -12,6 +13,7 @@ import BurgerMenu from '@components/BurgerMenu/BurgerMenu';
 import useCategoryStore from '@store/categoryStore';
 import { tokenStore } from '@utils/tokenStore';
 import useSearchStore from '@store/searchStore';
+import useCartStore from '@store/cartStore';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const Navigation = () => {
   const resetCategory = useCategoryStore((state) => state.resetCategory);
   const setSearchValue = useSearchStore((state) => state.setValue);
   const resetUser = useUserStore((state) => state.resetUser);
+  const items = useCartStore((state) => state.items);
   const handleSignoutButtonClick = () => {
     resetUser();
     tokenStore.resetToken();
@@ -78,6 +81,15 @@ const Navigation = () => {
             </Tooltip>
           </>
         )}
+        <Tooltip title="Cart">
+          <Badge count={items?.reduce((acc, item) => acc + item.quantity, 0)}>
+            <Button
+              icon={<ShoppingOutlined />}
+              onClick={() => navigate('/basket')}
+              type="link"
+            ></Button>
+          </Badge>
+        </Tooltip>
       </div>
     </nav>
   );

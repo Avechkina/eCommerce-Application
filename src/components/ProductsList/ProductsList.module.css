@@ -1,0 +1,7 @@
+.skeleton {
+  min-width: 200px;
+  max-width: 400px;
+  width: calc(33% - 16px);
+  padding-bottom: 5px;
+  border-radius: 5px;
+}

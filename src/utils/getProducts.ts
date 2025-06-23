@@ -14,7 +14,6 @@ const getProducts = (
           'text.en-US': searchText,
           fuzzy: true,
           fuzzyLevel: 1,
-          limit: 9,
           ...(categoryId && { filter: [`categories.id:"${categoryId}"`] }),
         },
       })
@@ -28,7 +27,6 @@ const getProducts = (
       .get({
         queryArgs: {
           sort: `${sortValue}`,
-          limit: 9,
           ...(categoryId && { filter: [`categories.id:"${categoryId}"`] }),
         },
       })
@@ -38,7 +36,6 @@ const getProducts = (
     .productProjections()
     .get({
       queryArgs: {
-        limit: 9,
         expand: ['productType'],
         ...(categoryId && { where: `categories(id="${categoryId}")` }),
       },
