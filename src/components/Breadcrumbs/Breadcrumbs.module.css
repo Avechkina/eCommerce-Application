@@ -1,0 +1,11 @@
+.breadcrumbs {
+  padding-left: 28px;
+}
+/* Remove after breadcrumb navigation is implemented  */
+.breadcrumbs li {
+  cursor: default;
+}
+
+/* .breadcrumbs li:last-child {
+  cursor: default;
+} */
